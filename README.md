@@ -1,4 +1,4 @@
-# Paradox Automation Modules
+# Paradox Automation Modules [![Build Status](https://travis-ci.org/somejavadev/paradox.svg?branch=master)](https://travis-ci.org/somejavadev/paradox)
 
 This project contains modules allowing you to integrate with a paradox alarm system.
 
