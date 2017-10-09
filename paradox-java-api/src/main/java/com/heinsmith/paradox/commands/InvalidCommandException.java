@@ -1,7 +1,7 @@
 package com.heinsmith.paradox.commands;
 
 /**
- * Created by somejavauser on 2017/03/18.
+ * Created by Hein Smith on 2017/03/18.
  */
 public class InvalidCommandException extends RuntimeException {
 

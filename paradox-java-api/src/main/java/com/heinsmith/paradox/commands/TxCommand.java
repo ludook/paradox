@@ -3,7 +3,7 @@ package com.heinsmith.paradox.commands;
 import com.heinsmith.paradox.ProtocolConstants;
 
 /**
- * Created by someuser on 2017/05/31.
+ * Created by Hein Smith on 2017/05/31.
  */
 public abstract class TxCommand {
 

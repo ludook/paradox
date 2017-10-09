@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Created by somejavadev on 2017/03/18.
+ * Created by Hein Smith on 2017/03/18.
  */
 class CommandTest {
 

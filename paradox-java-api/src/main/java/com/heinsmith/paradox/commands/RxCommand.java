@@ -5,7 +5,7 @@ import com.heinsmith.paradox.ProtocolConstants;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Created by somejavadev on 2017/03/18.
+ * Created by Hein Smith on 2017/03/18.
  */
 public class RxCommand {
 

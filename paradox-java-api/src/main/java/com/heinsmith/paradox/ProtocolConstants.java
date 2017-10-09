@@ -1,7 +1,7 @@
 package com.heinsmith.paradox;
 
 /**
- * Created by somejavadev on 2017/03/18.
+ * Created by Hein Smith on 2017/03/18.
  *
  * Constants file which includes constants used by the
  * APR3-PRT3 Printer module from paradox alarm systems.

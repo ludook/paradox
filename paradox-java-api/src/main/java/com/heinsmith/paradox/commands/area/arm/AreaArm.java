@@ -5,7 +5,7 @@ import com.heinsmith.paradox.commands.CommandValidationException;
 import com.heinsmith.paradox.commands.TxCommand;
 
 /**
- * Created by somejavadev on 2017/03/24.
+ * Created by Hein Smith on 2017/03/24.
  */
 public class AreaArm extends TxCommand {
 
