@@ -17,8 +17,52 @@
 
 package com.heinsmith.paradox.commands.area.disarm;
 
+import com.heinsmith.paradox.CommonValidationUtils;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.TxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaDisarm {
+public class AreaDisarm extends TxCommand {
+
+    private int area;
+    private char[] password;
+
+    public AreaDisarm(int area, char[] password) throws CommandValidationException {
+        super(CommandId.AREA_DISARM);
+
+        if (CommonValidationUtils.invalidAreaNumber(area)) {
+            throw new CommandValidationException();
+        }
+
+        if (CommonValidationUtils.invalidPanelCode(password)) {
+            throw new CommandValidationException();
+        }
+
+        this.area = area;
+        this.password = password;
+    }
+
+    @Override
+    protected String buildCommand() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%03d", area));
+        builder.append(password);
+        return builder.toString();
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", area);
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
 }

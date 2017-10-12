@@ -22,7 +22,8 @@ package com.heinsmith.paradox.commands;
  */
 public enum CommandId {
 
-    AREA_ARM("AA");
+    AREA_ARM("AA"),
+    AREA_DISARM("AD");
 
     private String key;
 
