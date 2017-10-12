@@ -30,16 +30,10 @@ public class AreaArm extends TxCommand {
     private char[] password;
     private ArmType armType;
 
-    public AreaArm(int area, ArmType armType, char[] password) {
+    public AreaArm(int area, ArmType armType, char[] password) throws CommandValidationException {
         super(CommandId.AREA_ARM);
-        this.armType = armType;
-        this.area = area;
-        this.password = password;
-    }
 
-    @Override
-    protected String buildCommand() throws CommandValidationException {
-        if(area < 0 || area > 8) {
+        if(area < 1 || area > 8) {
             throw new CommandValidationException();
         }
 
@@ -47,20 +41,27 @@ public class AreaArm extends TxCommand {
             throw new CommandValidationException();
         }
 
-        if(password == null || password.length < 1) {
+        if(password == null || password.length < 4 || password.length > 6) {
             throw new CommandValidationException();
         }
+
+        this.armType = armType;
+        this.area = area;
+        this.password = password;
+    }
+
+    @Override
+    protected String buildCommand() {
         StringBuilder builder =  new StringBuilder();
         builder.append(String.format("%03d", area));
         builder.append(armType.getKey());
         builder.append(password);
-
         return builder.toString();
     }
 
     @Override
     public String getResponseCode() {
-        return key.getKey() + String.format("%03d", area);
+        return commandId.getKey() + String.format("%03d", area);
     }
 
     public int getArea() {

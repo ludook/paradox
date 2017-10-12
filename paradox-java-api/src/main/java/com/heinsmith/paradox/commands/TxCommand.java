@@ -27,30 +27,28 @@ import java.util.List;
  */
 public abstract class TxCommand {
 
-    protected CommandId key;
+    protected CommandId commandId;
     private String command;
     private final List<ResponseHandler> responseHandlers = new ArrayList<>();
 
-    public TxCommand(CommandId key) {
-        this.key = key;
+    public TxCommand(CommandId commandId) throws CommandValidationException {
+        if(commandId == null) {
+            throw new CommandValidationException();
+        }
+        this.commandId = commandId;
     }
 
-    protected abstract String buildCommand() throws CommandValidationException;
+    protected abstract String buildCommand();
 
     public String getAscii() {
 
         if (command == null) {
-            try {
-                String childCommand = buildCommand();
-                StringBuilder builder = new StringBuilder();
-                builder.append(key.getKey());
-                builder.append(childCommand);
-                builder.append(ProtocolConstants.COMMAND_END);
-                command = builder.toString();
-            } catch (CommandValidationException e) {
-                e.printStackTrace();
-                command = null;
-            }
+            String childCommand = buildCommand();
+            StringBuilder builder = new StringBuilder();
+            builder.append(commandId.getKey());
+            builder.append(childCommand);
+            builder.append(ProtocolConstants.COMMAND_END);
+            command = builder.toString();
         }
         return command;
     }

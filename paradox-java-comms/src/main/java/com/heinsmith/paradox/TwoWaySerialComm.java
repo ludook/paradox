@@ -18,6 +18,7 @@
 package com.heinsmith.paradox;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.heinsmith.paradox.commands.CommandValidationException;
 import com.heinsmith.paradox.commands.ResponseHandler;
 import com.heinsmith.paradox.commands.TxCommand;
 import com.heinsmith.paradox.commands.area.arm.AreaArm;
@@ -58,8 +59,12 @@ public class TwoWaySerialComm {
         comPort.openPort();
         comPort.addDataListener(new ParadoxSerialPortDataListener());
 
-        String password = "";
-        AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, password.toCharArray());
+        AreaArm areaArm = null;
+        try {
+            areaArm = new AreaArm(1, ArmType.REGULAR_ARM, "1234".toCharArray());
+        } catch (CommandValidationException e) {
+            logger.error(e);
+        }
 
         areaArm.addResponseHandler((txCommand, success) -> logger.debug("success=[" + success + "], command=[" + txCommand.getAscii().replace("\r", "") + "]"));
         runCommand(txRxQueue, comPort, areaArm);
