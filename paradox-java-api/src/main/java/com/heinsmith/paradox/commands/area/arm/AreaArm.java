@@ -17,6 +17,7 @@
 
 package com.heinsmith.paradox.commands.area.arm;
 
+import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
 import com.heinsmith.paradox.commands.TxCommand;
@@ -33,7 +34,7 @@ public class AreaArm extends TxCommand {
     public AreaArm(int area, ArmType armType, char[] password) throws CommandValidationException {
         super(CommandId.AREA_ARM);
 
-        if(area < 1 || area > 8) {
+        if(CommonValidationUtils.invalidAreaNumber(area)) {
             throw new CommandValidationException();
         }
 
@@ -41,7 +42,7 @@ public class AreaArm extends TxCommand {
             throw new CommandValidationException();
         }
 
-        if(password == null || password.length < 4 || password.length > 6) {
+        if(CommonValidationUtils.invalidPanelCode(password)) {
             throw new CommandValidationException();
         }
 
