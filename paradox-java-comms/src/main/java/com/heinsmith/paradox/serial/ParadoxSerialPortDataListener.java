@@ -39,7 +39,7 @@ public class ParadoxSerialPortDataListener implements SerialPortDataListener {
         }
         SerialPort serialPort = serialPortEvent.getSerialPort();
         byte[] newData = new byte[serialPort.bytesAvailable()];
-        int numRead = serialPort.readBytes(newData, newData.length);
+        serialPort.readBytes(newData, newData.length);
         ParadoxCommandReceiver.receive(newData);
     }
 }
