@@ -18,23 +18,76 @@
 package com.heinsmith.paradox;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.heinsmith.paradox.commands.ResponseHandler;
+import com.heinsmith.paradox.commands.TxCommand;
+import com.heinsmith.paradox.commands.area.arm.AreaArm;
+import com.heinsmith.paradox.commands.area.arm.ArmType;
 import com.heinsmith.paradox.serial.ParadoxSerialPortDataListener;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-/**
- * This version of the TwoWaySerialComm example makes use of the
- * SerialPortEventListener to avoid polling.
- *
- */
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.List;
+
+
 public class TwoWaySerialComm {
+
+    private static final Logger logger = LogManager.getLogger(TwoWaySerialComm.class.getName());
+
     public static void main(String[] args) {
+
+        HashMap<String, ArrayDeque<TxCommand>> txRxQueue = new HashMap<>();
         SerialPort comPort = SerialPort.getCommPort("/tmp/virtualcom0");
-        ParadoxCommandReceiver.addCommandListener(new CommandListener() {
-            @Override
-            public void receiveCommand(String command) {
-                System.out.println(command);
+        ParadoxCommandReceiver.addCommandListener(response -> {
+            logger.info(response);
+            int indexOf = response.indexOf("&");
+            if (indexOf > 0) {
+                String responseCode = response.substring(0, indexOf);
+                txRxQueue.computeIfPresent(responseCode, (responseKey, responseEventHandler) -> {
+                    TxCommand txCommand = responseEventHandler.pop();
+                    boolean success = response.endsWith(ProtocolConstants.COMMAND_OK);
+                    List<ResponseHandler> responseHandlers = txCommand.getResponseHandlers();
+                    responseHandlers.forEach(responseHandler -> responseHandler.fireResponse(txCommand, success));
+                    return responseEventHandler;
+                });
+            } else {
+                // read only event.
             }
         });
         comPort.openPort();
         comPort.addDataListener(new ParadoxSerialPortDataListener());
+
+        String password = "";
+        AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, password.toCharArray());
+
+        areaArm.addResponseHandler((txCommand, success) -> logger.debug("success=[" + success + "], command=[" + txCommand.getAscii().replace("\r", "") + "]"));
+        runCommand(txRxQueue, comPort, areaArm);
+
+    }
+
+    public static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
+        OutputStream outputStream = comPort.getOutputStream();
+        try {
+            byte[] panelBytes = txCommand.getAscii().getBytes();
+            String responseCode = txCommand.getResponseCode();
+
+            txRxQueue.computeIfPresent(responseCode, (key, responseEventHandlers) -> {
+                responseEventHandlers.addLast(txCommand);
+                return responseEventHandlers;
+            });
+
+            txRxQueue.computeIfAbsent(responseCode, (key) -> {
+                ArrayDeque<TxCommand> arrayDeque = new ArrayDeque<>();
+                arrayDeque.addLast(txCommand);
+                return arrayDeque;
+            });
+            outputStream.write(panelBytes);
+
+        } catch (IOException e) {
+            logger.error(e);
+        }
     }
 }

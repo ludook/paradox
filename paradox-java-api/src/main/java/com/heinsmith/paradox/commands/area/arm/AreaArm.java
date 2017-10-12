@@ -50,13 +50,17 @@ public class AreaArm extends TxCommand {
         if(password == null || password.length < 1) {
             throw new CommandValidationException();
         }
-
         StringBuilder builder =  new StringBuilder();
-        builder.append(String.format("%03d", String.valueOf(area)));
+        builder.append(String.format("%03d", area));
         builder.append(armType.getKey());
         builder.append(password);
 
         return builder.toString();
+    }
+
+    @Override
+    public String getResponseCode() {
+        return key.getKey() + String.format("%03d", area);
     }
 
     public int getArea() {

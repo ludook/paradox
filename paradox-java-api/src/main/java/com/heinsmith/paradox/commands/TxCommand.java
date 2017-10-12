@@ -19,13 +19,17 @@ package com.heinsmith.paradox.commands;
 
 import com.heinsmith.paradox.ProtocolConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Hein Smith on 2017/05/31.
  */
 public abstract class TxCommand {
 
-    private CommandId key;
+    protected CommandId key;
     private String command;
+    private final List<ResponseHandler> responseHandlers = new ArrayList<>();
 
     public TxCommand(CommandId key) {
         this.key = key;
@@ -33,13 +37,13 @@ public abstract class TxCommand {
 
     protected abstract String buildCommand() throws CommandValidationException;
 
-    public String getCommand() {
+    public String getAscii() {
 
-        if(command == null) {
+        if (command == null) {
             try {
                 String childCommand = buildCommand();
                 StringBuilder builder = new StringBuilder();
-                builder.append(key);
+                builder.append(key.getKey());
                 builder.append(childCommand);
                 builder.append(ProtocolConstants.COMMAND_END);
                 command = builder.toString();
@@ -49,5 +53,15 @@ public abstract class TxCommand {
             }
         }
         return command;
+    }
+
+    public abstract String getResponseCode();
+
+    public void addResponseHandler(final ResponseHandler responseHandler) {
+        responseHandlers.add(responseHandler);
+    }
+
+    public List<ResponseHandler> getResponseHandlers() {
+        return responseHandlers;
     }
 }
