@@ -17,63 +17,16 @@
 
 package com.heinsmith.paradox.commands.area.arm;
 
-import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
-import com.heinsmith.paradox.commands.TxCommand;
 
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaArm extends TxCommand {
-
-    private int area;
-    private char[] password;
-    private ArmType armType;
+public class AreaArm extends AreaArmBase {
 
     public AreaArm(int area, ArmType armType, char[] password) throws CommandValidationException {
-        super(CommandId.AREA_ARM);
-
-        if(CommonValidationUtils.invalidAreaNumber(area)) {
-            throw new CommandValidationException();
-        }
-
-        if(armType == null) {
-            throw new CommandValidationException();
-        }
-
-        if(CommonValidationUtils.invalidPanelCode(password)) {
-            throw new CommandValidationException();
-        }
-
-        this.armType = armType;
-        this.area = area;
-        this.password = password;
+        super(CommandId.AREA_ARM, area, armType, password);
     }
 
-    @Override
-    protected String buildCommand() {
-        StringBuilder builder =  new StringBuilder();
-        builder.append(String.format("%03d", area));
-        builder.append(armType.getKey());
-        builder.append(password);
-        return builder.toString();
-    }
-
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", area);
-    }
-
-    public int getArea() {
-        return area;
-    }
-
-    public char[] getPassword() {
-        return password;
-    }
-
-    public ArmType getArmType() {
-        return armType;
-    }
 }

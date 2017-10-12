@@ -17,8 +17,15 @@
 
 package com.heinsmith.paradox.commands.area.arm;
 
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaQuickArm {
+public class AreaQuickArm extends AreaArmBase {
+
+    public AreaQuickArm(int area, ArmType armType, char[] password) throws CommandValidationException {
+        super(CommandId.AREA_QUICK_ARM, area, armType, password);
+    }
 }
