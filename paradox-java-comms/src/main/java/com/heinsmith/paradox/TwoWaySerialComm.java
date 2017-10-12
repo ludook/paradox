@@ -53,8 +53,6 @@ public class TwoWaySerialComm {
                     responseHandlers.forEach(responseHandler -> responseHandler.fireResponse(txCommand, success));
                     return responseEventHandler;
                 });
-            } else {
-                // read only event.
             }
         });
         comPort.openPort();
@@ -68,7 +66,7 @@ public class TwoWaySerialComm {
 
     }
 
-    public static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
+    private static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
         OutputStream outputStream = comPort.getOutputStream();
         try {
             byte[] panelBytes = txCommand.getAscii().getBytes();

@@ -34,13 +34,12 @@ public class ParadoxCommandReceiver {
     public static void receive(byte[] dataInput) {
         try {
             LOCK.writeLock().lock();
-            for (int i = 0; i < dataInput.length; i++) {
-                byte newAsciiData = dataInput[i];
+            for (byte newAsciiData : dataInput) {
                 char asciiInput = (char) (newAsciiData & 0xFF);
-                if(asciiInput == ProtocolConstants.COMMAND_END) {
+                if (asciiInput == ProtocolConstants.COMMAND_END) {
                     COMMAND_CONTAINER.append(asciiInput);
-                    String command = COMMAND_CONTAINER.toString() ;
-                    for (CommandListener commandListener: COMMAND_LISTENERS) {
+                    String command = COMMAND_CONTAINER.toString();
+                    for (CommandListener commandListener : COMMAND_LISTENERS) {
                         commandListener.receiveCommand(command);
                     }
                     COMMAND_CONTAINER.delete(0, COMMAND_CONTAINER.length());
