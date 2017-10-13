@@ -28,12 +28,11 @@ public class CommonValidationUtils {
     public static boolean invalidPanelCode(char[] code) {
         boolean result = (code == null || code.length < 4 || code.length > 6);
         if(!result) {
-            checkDigit:
             for (int i = 0; i < code.length; i++) {
                 char codeEntry = code[i];
                 if(!Character.isDigit(codeEntry)) {
                     result = true;
-                    break checkDigit;
+                    break;
                 }
             }
         }
