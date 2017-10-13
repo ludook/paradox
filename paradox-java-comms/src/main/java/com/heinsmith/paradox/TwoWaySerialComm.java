@@ -59,16 +59,13 @@ public class TwoWaySerialComm {
         comPort.openPort();
         comPort.addDataListener(new ParadoxSerialPortDataListener());
 
-        AreaArm areaArm = null;
         try {
-            areaArm = new AreaArm(1, ArmType.REGULAR_ARM, "1234".toCharArray());
+            AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, "1234".toCharArray());
+            areaArm.addResponseHandler((txCommand, success) -> logger.debug("success=[" + success + "], command=[" + txCommand.getAscii().replace("\r", "") + "]"));
+            runCommand(txRxQueue, comPort, areaArm);
         } catch (CommandValidationException e) {
             logger.error(e);
         }
-
-        areaArm.addResponseHandler((txCommand, success) -> logger.debug("success=[" + success + "], command=[" + txCommand.getAscii().replace("\r", "") + "]"));
-        runCommand(txRxQueue, comPort, areaArm);
-
     }
 
     private static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
