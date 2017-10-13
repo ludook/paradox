@@ -27,6 +27,7 @@ The software requirements:
 
 * [Java 8](http://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html) - Core Programming Language
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [junit 4](http://junit.org/junit4/) - A simple framework to write repeatable tests
 
 ## Authors
 
@@ -37,3 +38,7 @@ See also the list of [contributors](https://github.com/somejavadev/paradox/graph
 ## License
 
 This project is licensed under the GNU GPLv3 License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Note
+
+This API integrates with [Paradox](http://www.paradox.com/) alarm systems but is in no way affiliated with the company itself.
