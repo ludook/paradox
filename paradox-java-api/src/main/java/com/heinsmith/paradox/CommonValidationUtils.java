@@ -17,12 +17,13 @@
 
 package com.heinsmith.paradox;
 
-import com.heinsmith.paradox.commands.CommandValidationException;
-
 /**
  * Created by Hein Smith on 2017/10/12.
  */
 public class CommonValidationUtils {
+
+    private CommonValidationUtils() {
+    }
 
     public static boolean invalidPanelCode(char[] code) {
         return (code == null || code.length < 4 || code.length > 6);
