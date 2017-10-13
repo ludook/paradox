@@ -44,7 +44,7 @@ public class TwoWaySerialComm {
         SerialPort comPort = SerialPort.getCommPort("/tmp/virtualcom0");
         ParadoxCommandReceiver.addCommandListener(response -> {
             logger.info(response);
-            int indexOf = response.indexOf("&");
+            int indexOf = response.indexOf('&');
             if (indexOf > 0) {
                 String responseCode = response.substring(0, indexOf);
                 txRxQueue.computeIfPresent(responseCode, (responseKey, responseEventHandler) -> {
@@ -79,7 +79,7 @@ public class TwoWaySerialComm {
                 return responseEventHandlers;
             });
 
-            txRxQueue.computeIfAbsent(responseCode, (key) -> {
+            txRxQueue.computeIfAbsent(responseCode, key -> {
                 ArrayDeque<TxCommand> arrayDeque = new ArrayDeque<>();
                 arrayDeque.addLast(txCommand);
                 return arrayDeque;
