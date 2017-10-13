@@ -17,15 +17,40 @@
 
 package com.heinsmith.paradox.commands.virtual.input;
 
+import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.InvalidCommandException;
+import com.heinsmith.paradox.commands.TxCommand;
 
 /**
- * Created by Hein Smith on 2017/03/25.
+ * Created by Hein Smith on 2017/10/13.
  */
-public class VirtualInputOpen extends VirtualInput {
+public abstract class VirtualInput extends TxCommand {
 
-    public VirtualInputOpen(int inputNumber) throws CommandValidationException {
-        super(CommandId.VIRTUAL_INPUT_OPEN, inputNumber);
+    private int inputNumber;
+
+    public VirtualInput(CommandId commandId, int inputNumber) throws CommandValidationException {
+        super(commandId);
+
+        if (CommonValidationUtils.invalidInputNumber(inputNumber)) {
+            throw new InvalidCommandException();
+        }
+
+        this.inputNumber = inputNumber;
+    }
+
+    public int getInputNumber() {
+        return inputNumber;
+    }
+
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", inputNumber);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", inputNumber);
     }
 }

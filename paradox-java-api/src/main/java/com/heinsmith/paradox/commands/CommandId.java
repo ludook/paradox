@@ -24,6 +24,8 @@ public enum CommandId {
 
     AREA_ARM("AA"),
     AREA_QUICK_ARM("AQ"),
+    VIRTUAL_INPUT_OPEN("VO"),
+    VIRTUAL_INPUT_CLOSE("VC"),
     AREA_DISARM("AD");
 
     private String key;

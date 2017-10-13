@@ -25,6 +25,10 @@ public class CommonValidationUtils {
     private CommonValidationUtils() {
     }
 
+    public static boolean invalidInputNumber(int number) {
+        return (number < 1 || number > 16);
+    }
+
     public static boolean invalidPanelCode(char[] code) {
         boolean result = (code == null || code.length < 4 || code.length > 6);
         if(!result) {

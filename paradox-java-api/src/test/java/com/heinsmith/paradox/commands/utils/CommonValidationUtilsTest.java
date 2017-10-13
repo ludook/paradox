@@ -82,4 +82,23 @@ public class CommonValidationUtilsTest {
             assertTrue(result);
         }
     }
+
+    @Test
+    public void testInvalidInputNumber() {
+        boolean result;
+        for (int i = 0; i > Integer.MIN_VALUE; i--) {
+            result = CommonValidationUtils.invalidInputNumber(i);
+            assertTrue(result);
+        }
+
+        for (int i = 1; i < 16; i++) {
+            result = CommonValidationUtils.invalidInputNumber(i);
+            assertFalse(result);
+        }
+
+        for (int i = 17; i < Integer.MAX_VALUE; i++) {
+            result = CommonValidationUtils.invalidInputNumber(i);
+            assertTrue(result);
+        }
+    }
 }

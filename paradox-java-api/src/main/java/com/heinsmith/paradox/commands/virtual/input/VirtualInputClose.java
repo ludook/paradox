@@ -17,8 +17,15 @@
 
 package com.heinsmith.paradox.commands.virtual.input;
 
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+
 /**
  * Created by Hein Smith on 2017/03/25.
  */
-public class VirtualInputClose {
+public class VirtualInputClose extends VirtualInput {
+
+    public VirtualInputClose(int inputNumber) throws CommandValidationException {
+        super(CommandId.VIRTUAL_INPUT_CLOSE, inputNumber);
+    }
 }
