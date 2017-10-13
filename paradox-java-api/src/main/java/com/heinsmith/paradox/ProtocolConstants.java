@@ -24,26 +24,28 @@ package com.heinsmith.paradox;
  * APR3-PRT3 Printer module from paradox alarm systems.
  *
  */
-public interface ProtocolConstants {
+public class ProtocolConstants {
 
-    Character COMMAND_END = '\r';
-    String COMMAND_OK = "&ok" + COMMAND_END;
-    String COMMAND_FAIL = "&fail" + COMMAND_END;
-    String BUFFER_FULL = "!" + COMMAND_END;
+    private ProtocolConstants() {
+    }
 
+    public static  final Character COMMAND_END = '\r';
+    public static  final String COMMAND_OK = "&ok" + COMMAND_END;
+    public static  final String COMMAND_FAIL = "&fail" + COMMAND_END;
+    public static  final String BUFFER_FULL = "!" + COMMAND_END;
 
     // BYTES from specification are 0 indexed.
-    int BYTE_01 = 0;
-    int BYTE_02 = 1;
-    int BYTE_03 = 2;
-    int BYTE_04 = 3;
-    int BYTE_05 = 4;
-    int BYTE_06 = 5;
-    int BYTE_07 = 6;
-    int BYTE_08 = 7;
-    int BYTE_09 = 8;
-    int BYTE_10 = 9;
-    int BYTE_11 = 10;
-    int BYTE_12 = 11;
+    public static  final int BYTE_01 = 0;
+    public static  final int BYTE_02 = 1;
+    public static  final int BYTE_03 = 2;
+    public static  final int BYTE_04 = 3;
+    public static  final int BYTE_05 = 4;
+    public static  final int BYTE_06 = 5;
+    public static  final int BYTE_07 = 6;
+    public static  final int BYTE_08 = 7;
+    public static  final int BYTE_09 = 8;
+    public static  final int BYTE_10 = 9;
+    public static  final int BYTE_11 = 10;
+    public static  final int BYTE_12 = 11;
 
 }
