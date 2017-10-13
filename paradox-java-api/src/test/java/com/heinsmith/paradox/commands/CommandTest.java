@@ -3,7 +3,8 @@ package com.heinsmith.paradox.commands;
 import com.heinsmith.paradox.ProtocolConstants;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -52,8 +53,8 @@ public class CommandTest {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.
-        for (int c=32; c<128; c++) {
-            char asciiCharacter = (char)c;
+        for (int c = 32; c < 128; c++) {
+            char asciiCharacter = (char) c;
             rawCommand = "COMM" + asciiCharacter + "&ok\r";
             rxCommand = new RxCommand(rawCommand);
             assertEquals(9, rxCommand.getBytes().length);
@@ -66,8 +67,8 @@ public class CommandTest {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.
-        for (int c=32; c<128; c++) {
-            char asciiCharacter = (char)c;
+        for (int c = 32; c < 128; c++) {
+            char asciiCharacter = (char) c;
             String chars = asciiCharacter + "" + asciiCharacter + "";
             rawCommand = "A" + chars + "&ok\r";
             rxCommand = new RxCommand(rawCommand);
@@ -79,4 +80,19 @@ public class CommandTest {
         assertEquals("A", rxCommand.get(ProtocolConstants.BYTE_01, ProtocolConstants.BYTE_01));
     }
 
+    @Test(expected = CommandValidationException.class)
+    public void invalidConstructionTest() throws CommandValidationException {
+        TxCommand txCommand = new TxCommand(null) {
+
+            @Override
+            protected String buildCommand() {
+                return null;
+            }
+
+            @Override
+            public String getResponseCode() {
+                return null;
+            }
+        };
+    }
 }

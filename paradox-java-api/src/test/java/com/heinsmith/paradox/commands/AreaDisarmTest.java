@@ -58,4 +58,9 @@ public class AreaDisarmTest {
         char[] shortCode = new char[]{'1', '2'};
         new AreaDisarm(1, shortCode);
     }
+
+    @Test(expected = CommandValidationException.class)
+    public void testInvalidArea() throws CommandValidationException {
+        new AreaDisarm(9, testCode);
+    }
 }

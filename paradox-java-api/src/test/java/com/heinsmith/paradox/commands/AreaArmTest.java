@@ -73,4 +73,9 @@ public class AreaArmTest {
         char[] shortCode = new char[]{};
         new AreaArm(4, ArmType.REGULAR_ARM, shortCode);
     }
+
+    @Test(expected = CommandValidationException.class)
+    public void testInvalidArmType() throws CommandValidationException {
+        new AreaArm(4, null, testCode);
+    }
 }
