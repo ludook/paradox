@@ -39,6 +39,6 @@ See also the list of [contributors](https://github.com/somejavadev/paradox/graph
 
 This project is licensed under the GNU GPLv3 License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Note
+## Disclaimer
 
 This API integrates with [Paradox](http://www.paradox.com/) alarm systems but is in no way affiliated with the company itself.
