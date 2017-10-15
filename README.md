@@ -21,13 +21,14 @@ The software requirements:
 
 ```
 - Java 8
+- BabyWare, WinLoad or Keypad to configure your paradox panel
 ```
 
 ## Built With
 
 * [Java 8](http://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html) - Core Programming Language
 * [Maven](https://maven.apache.org/) - Dependency Management
-* [junit 4](http://junit.org/junit4/) - A simple framework to write repeatable tests
+* [junit 5](http://junit.org/junit5/) - A simple framework to write repeatable tests
 
 ## Authors
 
