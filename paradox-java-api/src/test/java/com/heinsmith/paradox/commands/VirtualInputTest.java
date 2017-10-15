@@ -20,9 +20,10 @@ package com.heinsmith.paradox.commands;
 import com.heinsmith.paradox.commands.virtual.input.VirtualInput;
 import com.heinsmith.paradox.commands.virtual.input.VirtualInputClose;
 import com.heinsmith.paradox.commands.virtual.input.VirtualInputOpen;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Created by Hein Smith on 2017/10/13.
@@ -30,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 public class VirtualInputTest {
 
     @Test
-    public void testVirtualInputAscii() throws CommandValidationException {
+    void testVirtualInputAscii() throws CommandValidationException {
 
         VirtualInput virtualInput = new VirtualInputOpen(16);
         assertEquals("VO016\r", virtualInput.getAscii());
@@ -41,7 +42,7 @@ public class VirtualInputTest {
 
 
     @Test
-    public void testVirtualInputResponse() throws CommandValidationException {
+    void testVirtualInputResponse() throws CommandValidationException {
 
         VirtualInput virtualInput = new VirtualInputOpen(1);
         assertEquals("VO001", virtualInput.getResponseCode());
