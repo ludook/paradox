@@ -23,6 +23,7 @@ import com.heinsmith.paradox.commands.virtual.input.VirtualInputOpen;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 /**
@@ -35,6 +36,7 @@ class VirtualInputTest {
 
         VirtualInput virtualInput = new VirtualInputOpen(16);
         assertEquals("VO016\r", virtualInput.getAscii());
+        assertEquals(16, virtualInput.getInputNumber());
 
         virtualInput = new VirtualInputClose(4);
         assertEquals("VC004\r", virtualInput.getAscii());
@@ -49,5 +51,13 @@ class VirtualInputTest {
 
         virtualInput = new VirtualInputClose(2);
         assertEquals("VC002", virtualInput.getResponseCode());
+    }
+
+    @Test
+    void testInvalidConstruction() {
+        assertThrows(InvalidCommandException.class, () -> {
+           new VirtualInput(CommandId.VIRTUAL_INPUT_OPEN, 999) {
+           };
+        });
     }
 }

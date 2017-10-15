@@ -22,6 +22,7 @@ import com.heinsmith.paradox.commands.area.arm.ArmType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -43,6 +44,9 @@ class AreaArmTest {
 
         AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, testCode);
         assertEquals("AA001A1234\r", areaArm.getAscii());
+        assertEquals(ArmType.REGULAR_ARM, areaArm.getArmType());
+        assertEquals(1, areaArm.getArea());
+        assertSame(testCode, areaArm.getPassword());
 
         areaArm = new AreaArm(2, ArmType.FORCE_ARM, testCode);
         assertEquals("AA002F1234\r", areaArm.getAscii());

@@ -21,6 +21,7 @@ import com.heinsmith.paradox.commands.area.disarm.AreaDisarm;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -35,6 +36,8 @@ class AreaDisarmTest {
     void testResponseCode() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
         assertEquals("AD001", areaDisarm.getResponseCode());
+        assertEquals(1, areaDisarm.getArea());
+        assertSame(testCode, areaDisarm.getPassword());
 
         areaDisarm = new AreaDisarm(8, testCode);
         assertEquals("AD008", areaDisarm.getResponseCode());
