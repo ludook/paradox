@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by Hein Smith on 2017/03/18.
  */
-public class CommandTest {
+class CommandTest {
 
     private static final String FAILED = "COMM&fail\r";
     private static final String OK = "COMM&ok\r";

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Created by Hein Smith on 2017/10/12.
  */
-public class AreaDisarmTest {
+class AreaDisarmTest {
 
     private static final char[] testCode = new char[]{'4', '2', '3', '4'};
 

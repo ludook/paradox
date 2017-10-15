@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Created by Hein Smith on 2017/10/13.
  */
-public class VirtualInputTest {
+class VirtualInputTest {
 
     @Test
     void testVirtualInputAscii() throws CommandValidationException {

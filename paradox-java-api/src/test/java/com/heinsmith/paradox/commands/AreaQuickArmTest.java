@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Created by Hein Smith on 2017/10/12.
  */
-public class AreaQuickArmTest {
+class AreaQuickArmTest {
 
     private static final char[] testCode = new char[]{'1', '2', '3', '4'};
 

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Created by Hein Smith on 2017/10/13.
  */
-public class CommonValidationUtilsTest {
+class CommonValidationUtilsTest {
 
     @Test
     void testAreaRanges() {
