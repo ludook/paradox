@@ -28,48 +28,44 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Created by Hein Smith on 2017/10/12.
  */
-class AreaDisarmTest {
+class AreaDisarmTest implements TxCommandTest {
 
     private static final char[] testCode = new char[]{'4', '2', '3', '4'};
 
-    @Test
-    void testResponseCode() throws CommandValidationException {
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
-        assertEquals("AD001", areaDisarm.getResponseCode());
         assertEquals(1, areaDisarm.getArea());
         assertSame(testCode, areaDisarm.getPassword());
+    }
 
-        areaDisarm = new AreaDisarm(8, testCode);
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        AreaDisarm areaDisarm = new AreaDisarm(8, testCode);
         assertEquals("AD008", areaDisarm.getResponseCode());
     }
 
     @Test
-    void testDisarmAreas() throws CommandValidationException {
+    void areasTest() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
         assertEquals("AD0014234\r", areaDisarm.getAscii());
 
         areaDisarm = new AreaDisarm(4, testCode);
         assertEquals("AD0044234\r", areaDisarm.getAscii());
+
+        assertThrows(CommandValidationException.class, () -> new AreaDisarm(9, testCode));
     }
 
     @Test
-    void testLongCodeDisarm() throws CommandValidationException {
+    void codeTest() throws CommandValidationException {
         assertThrows(CommandValidationException.class, () -> {
             char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7'};
             new AreaDisarm(1, longCode);
         });
-    }
 
-    @Test
-    void testShortCodeDisarm() throws CommandValidationException {
         assertThrows(CommandValidationException.class, () -> {
             char[] shortCode = new char[]{'1', '2'};
             new AreaDisarm(1, shortCode);
         });
-    }
-
-    @Test
-    void testInvalidArea() throws CommandValidationException {
-        assertThrows(CommandValidationException.class, () -> new AreaDisarm(9, testCode));
     }
 }

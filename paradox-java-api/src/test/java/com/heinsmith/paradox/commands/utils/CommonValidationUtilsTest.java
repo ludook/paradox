@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CommonValidationUtilsTest {
 
     @Test
-    void testAreaRanges() {
+    void areaRangesTest() {
 
         boolean result;
         for (int i = 0; i > Integer.MIN_VALUE; i--) {
@@ -52,7 +52,7 @@ class CommonValidationUtilsTest {
     }
 
     @Test
-    void testInvalidPanelCode() {
+    void invalidPanelCodeTest() {
 
         boolean result;
 
@@ -85,7 +85,7 @@ class CommonValidationUtilsTest {
     }
 
     @Test
-    void testInvalidInputNumber() {
+    void invalidInputNumberTest() {
         boolean result;
         for (int i = 0; i > Integer.MIN_VALUE; i--) {
             result = CommonValidationUtils.invalidInputNumber(i);

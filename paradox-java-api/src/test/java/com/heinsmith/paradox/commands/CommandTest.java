@@ -15,7 +15,7 @@ class CommandTest {
     private static final String OK = "COMM&ok\r";
 
     @Test
-    void isSuccess() {
+    void isSuccessTest() {
         int length = OK.getBytes().length;
         RxCommand rxCommand = new RxCommand(OK);
         assertEquals(8, length);
@@ -24,7 +24,7 @@ class CommandTest {
     }
 
     @Test
-    void isFailed() {
+    void isFailedTest() {
 
         int length = FAILED.getBytes().length;
         RxCommand rxCommand = new RxCommand(FAILED);
@@ -35,20 +35,20 @@ class CommandTest {
     }
 
     @Test
-    void getBytes() {
+    void getBytesTest() {
         byte[] okBytes = OK.getBytes();
         RxCommand rxCommand = new RxCommand(OK);
         assertArrayEquals(okBytes, rxCommand.getBytes());
     }
 
     @Test
-    void getRawCommand() {
+    void getRawCommandTest() {
         RxCommand rxCommand = new RxCommand(OK);
         assertEquals(OK, rxCommand.getRawCommand());
     }
 
     @Test
-    void get() {
+    void getTest() {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.
@@ -62,7 +62,7 @@ class CommandTest {
     }
 
     @Test
-    void getIndexFromTo() {
+    void getIndexFromToTest() {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.

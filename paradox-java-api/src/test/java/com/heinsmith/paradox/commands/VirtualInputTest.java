@@ -29,23 +29,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Created by Hein Smith on 2017/10/13.
  */
-class VirtualInputTest {
+class VirtualInputTest implements TxCommandTest {
 
-    @Test
-    void testVirtualInputAscii() throws CommandValidationException {
-
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
         VirtualInput virtualInput = new VirtualInputOpen(16);
         assertEquals("VO016\r", virtualInput.getAscii());
         assertEquals(16, virtualInput.getInputNumber());
 
         virtualInput = new VirtualInputClose(4);
         assertEquals("VC004\r", virtualInput.getAscii());
+        assertEquals(4, virtualInput.getInputNumber());
     }
 
-
-    @Test
-    void testVirtualInputResponse() throws CommandValidationException {
-
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
         VirtualInput virtualInput = new VirtualInputOpen(1);
         assertEquals("VO001", virtualInput.getResponseCode());
 
@@ -54,10 +52,15 @@ class VirtualInputTest {
     }
 
     @Test
-    void testInvalidConstruction() {
+    void invalidConstructionTest() {
         assertThrows(InvalidCommandException.class, () -> {
-           new VirtualInput(CommandId.VIRTUAL_INPUT_OPEN, 999) {
-           };
+            new VirtualInput(CommandId.VIRTUAL_INPUT_OPEN, 999) {
+            };
+        });
+
+        assertThrows(CommandValidationException.class, () -> {
+            new VirtualInput(null, 4) {
+            };
         });
     }
 }
