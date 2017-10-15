@@ -1,10 +1,9 @@
 package com.heinsmith.paradox.commands;
 
 import com.heinsmith.paradox.ProtocolConstants;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -12,11 +11,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class CommandTest {
 
-    public static final String FAILED = "COMM&fail\r";
-    public static final String OK = "COMM&ok\r";
+    private static final String FAILED = "COMM&fail\r";
+    private static final String OK = "COMM&ok\r";
 
     @Test
-    public void isSuccess() {
+    void isSuccess() {
         int length = OK.getBytes().length;
         RxCommand rxCommand = new RxCommand(OK);
         assertEquals(8, length);
@@ -25,7 +24,7 @@ public class CommandTest {
     }
 
     @Test
-    public void isFailed() {
+    void isFailed() {
 
         int length = FAILED.getBytes().length;
         RxCommand rxCommand = new RxCommand(FAILED);
@@ -36,20 +35,20 @@ public class CommandTest {
     }
 
     @Test
-    public void getBytes() {
+    void getBytes() {
         byte[] okBytes = OK.getBytes();
         RxCommand rxCommand = new RxCommand(OK);
         assertArrayEquals(okBytes, rxCommand.getBytes());
     }
 
     @Test
-    public void getRawCommand() {
+    void getRawCommand() {
         RxCommand rxCommand = new RxCommand(OK);
         assertEquals(OK, rxCommand.getRawCommand());
     }
 
     @Test
-    public void get() {
+    void get() {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.
@@ -63,7 +62,7 @@ public class CommandTest {
     }
 
     @Test
-    public void getIndexFromTo() {
+    void getIndexFromTo() {
         String rawCommand;
         RxCommand rxCommand;
         // Loop through ASCII charset and ensure we receive the same character back as passed in the original rxCommand.
@@ -80,19 +79,24 @@ public class CommandTest {
         assertEquals("A", rxCommand.get(ProtocolConstants.BYTE_01, ProtocolConstants.BYTE_01));
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void invalidConstructionTest() throws CommandValidationException {
-        TxCommand txCommand = new TxCommand(null) {
+    @Test
+    void invalidConstructionTest() throws CommandValidationException {
 
-            @Override
-            protected String buildCommand() {
-                return null;
-            }
+        assertThrows(CommandValidationException.class, () -> {
 
-            @Override
-            public String getResponseCode() {
-                return null;
-            }
-        };
+            TxCommand txCommand = new TxCommand(null) {
+
+                @Override
+                protected String buildCommand() {
+                    return null;
+                }
+
+                @Override
+                public String getResponseCode() {
+                    return null;
+                }
+            };
+
+        });
     }
 }

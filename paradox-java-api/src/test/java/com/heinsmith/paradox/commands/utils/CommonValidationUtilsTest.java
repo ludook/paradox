@@ -18,12 +18,13 @@
 package com.heinsmith.paradox.commands.utils;
 
 import com.heinsmith.paradox.CommonValidationUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Created by Hein Smith on 2017/10/13.
@@ -31,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 public class CommonValidationUtilsTest {
 
     @Test
-    public void testAreaRanges() {
+    void testAreaRanges() {
 
         boolean result;
         for (int i = 0; i > Integer.MIN_VALUE; i--) {
@@ -51,7 +52,7 @@ public class CommonValidationUtilsTest {
     }
 
     @Test
-    public void testInvalidPanelCode() {
+    void testInvalidPanelCode() {
 
         boolean result;
 
@@ -84,7 +85,7 @@ public class CommonValidationUtilsTest {
     }
 
     @Test
-    public void testInvalidInputNumber() {
+    void testInvalidInputNumber() {
         boolean result;
         for (int i = 0; i > Integer.MIN_VALUE; i--) {
             result = CommonValidationUtils.invalidInputNumber(i);

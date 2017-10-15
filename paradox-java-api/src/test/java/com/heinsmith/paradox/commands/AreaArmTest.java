@@ -19,25 +19,27 @@ package com.heinsmith.paradox.commands;
 
 import com.heinsmith.paradox.commands.area.arm.AreaArm;
 import com.heinsmith.paradox.commands.area.arm.ArmType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 /**
  * Created by Hein Smith on 2017/10/12.
  */
 public class AreaArmTest {
 
-    private static char[] testCode = new char[]{'1', '2', '3', '4'};
+    private static final char[] testCode = new char[]{'1', '2', '3', '4'};
 
     @Test
-    public void testResponseCode() throws CommandValidationException {
+    void testResponseCode() throws CommandValidationException {
         AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, testCode);
         assertEquals("AA001", areaArm.getResponseCode());
     }
 
     @Test
-    public void testArmTypes() throws CommandValidationException {
+    void testArmTypes() throws CommandValidationException {
 
         AreaArm areaArm = new AreaArm(1, ArmType.REGULAR_ARM, testCode);
         assertEquals("AA001A1234\r", areaArm.getAscii());
@@ -52,30 +54,34 @@ public class AreaArmTest {
         assertEquals("AA004S1234\r", areaArm.getAscii());
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testAreaLow() throws CommandValidationException {
-        new AreaArm(0, ArmType.REGULAR_ARM, testCode);
+    @Test
+    void testAreaLow() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaArm(0, ArmType.REGULAR_ARM, testCode));
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testAreaHigh() throws CommandValidationException {
-        new AreaArm(9, ArmType.REGULAR_ARM, testCode);
+    @Test
+    void testAreaHigh() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaArm(9, ArmType.REGULAR_ARM, testCode));
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testLongCode() throws CommandValidationException {
-        char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
-        new AreaArm(1, ArmType.REGULAR_ARM, longCode);
+    @Test
+    void testLongCode() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
+            new AreaArm(1, ArmType.REGULAR_ARM, longCode);
+        });
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testNoCode() throws CommandValidationException {
-        char[] shortCode = new char[]{};
-        new AreaArm(4, ArmType.REGULAR_ARM, shortCode);
+    @Test
+    void testNoCode() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] shortCode = new char[]{};
+            new AreaArm(4, ArmType.REGULAR_ARM, shortCode);
+        });
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testInvalidArmType() throws CommandValidationException {
-        new AreaArm(4, null, testCode);
+    @Test
+    void testInvalidArmType() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaArm(4, null, testCode));
     }
 }

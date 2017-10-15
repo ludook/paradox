@@ -18,19 +18,21 @@
 package com.heinsmith.paradox.commands;
 
 import com.heinsmith.paradox.commands.area.disarm.AreaDisarm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 /**
  * Created by Hein Smith on 2017/10/12.
  */
 public class AreaDisarmTest {
 
-    private static char[] testCode = new char[]{'4', '2', '3', '4'};
+    private static final char[] testCode = new char[]{'4', '2', '3', '4'};
 
     @Test
-    public void testResponseCode() throws CommandValidationException {
+    void testResponseCode() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
         assertEquals("AD001", areaDisarm.getResponseCode());
 
@@ -39,7 +41,7 @@ public class AreaDisarmTest {
     }
 
     @Test
-    public void testDisarmAreas() throws CommandValidationException {
+    void testDisarmAreas() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
         assertEquals("AD0014234\r", areaDisarm.getAscii());
 
@@ -47,20 +49,24 @@ public class AreaDisarmTest {
         assertEquals("AD0044234\r", areaDisarm.getAscii());
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testLongCodeDisarm() throws CommandValidationException {
-        char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7'};
-        new AreaDisarm(1, longCode);
+    @Test
+    void testLongCodeDisarm() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7'};
+            new AreaDisarm(1, longCode);
+        });
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testShortCodeDisarm() throws CommandValidationException {
-        char[] shortCode = new char[]{'1', '2'};
-        new AreaDisarm(1, shortCode);
+    @Test
+    void testShortCodeDisarm() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] shortCode = new char[]{'1', '2'};
+            new AreaDisarm(1, shortCode);
+        });
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testInvalidArea() throws CommandValidationException {
-        new AreaDisarm(9, testCode);
+    @Test
+    void testInvalidArea() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaDisarm(9, testCode));
     }
 }

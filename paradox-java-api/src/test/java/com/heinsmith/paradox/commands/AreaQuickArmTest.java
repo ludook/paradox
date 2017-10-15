@@ -18,27 +18,28 @@
 package com.heinsmith.paradox.commands;
 
 import com.heinsmith.paradox.commands.area.arm.AreaQuickArm;
-import com.heinsmith.paradox.commands.area.arm.AreaQuickArm;
 import com.heinsmith.paradox.commands.area.arm.ArmType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 /**
  * Created by Hein Smith on 2017/10/12.
  */
 public class AreaQuickArmTest {
 
-    private static char[] testCode = new char[]{'1', '2', '3', '4'};
+    private static final char[] testCode = new char[]{'1', '2', '3', '4'};
 
     @Test
-    public void testResponseCode() throws CommandValidationException {
+    void testResponseCode() throws CommandValidationException {
         AreaQuickArm AreaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM, testCode);
         assertEquals("AQ001", AreaQuickArm.getResponseCode());
     }
 
     @Test
-    public void testArmTypes() throws CommandValidationException {
+    void testArmTypes() throws CommandValidationException {
 
         AreaQuickArm AreaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM, testCode);
         assertEquals("AQ001A1234\r", AreaQuickArm.getAscii());
@@ -53,25 +54,29 @@ public class AreaQuickArmTest {
         assertEquals("AQ004S1234\r", AreaQuickArm.getAscii());
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testAreaLow() throws CommandValidationException {
-        new AreaQuickArm(0, ArmType.REGULAR_ARM, testCode);
+    @Test
+    void testAreaLow() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(0, ArmType.REGULAR_ARM, testCode));
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testAreaHigh() throws CommandValidationException {
-        new AreaQuickArm(9, ArmType.REGULAR_ARM, testCode);
+    @Test
+    void testAreaHigh() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(9, ArmType.REGULAR_ARM, testCode));
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testLongCode() throws CommandValidationException {
-        char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
-        new AreaQuickArm(1, ArmType.REGULAR_ARM, longCode);
+    @Test
+    void testLongCode() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
+            new AreaQuickArm(1, ArmType.REGULAR_ARM, longCode);
+        });
     }
 
-    @Test(expected = CommandValidationException.class)
-    public void testNoCode() throws CommandValidationException {
-        char[] shortCode = new char[]{};
-        new AreaQuickArm(4, ArmType.REGULAR_ARM, shortCode);
+    @Test
+    void testNoCode() throws CommandValidationException {
+        assertThrows(CommandValidationException.class, () -> {
+            char[] shortCode = new char[]{};
+            new AreaQuickArm(4, ArmType.REGULAR_ARM, shortCode);
+        });
     }
 }
