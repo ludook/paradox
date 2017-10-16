@@ -17,7 +17,7 @@
 
 package com.heinsmith.paradox.commands;
 
-import com.heinsmith.paradox.commands.area.status.AreaStatusRequest;
+import com.heinsmith.paradox.commands.area.status.AreaStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,12 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Created by Hein Smith on 2017/10/16.
  */
-public class AreaStatusRequestTest implements TxCommandTest {
+public class AreaStatusTest implements TxCommandTest {
 
     @Test
     @Override
     public void positiveConstructionTest() throws CommandValidationException {
-        AreaStatusRequest request = new AreaStatusRequest(1);
+        AreaStatus request = new AreaStatus(1);
         assertEquals(1, request.getArea());
         assertEquals("RA001\r", request.getAscii());
     }
@@ -39,13 +39,13 @@ public class AreaStatusRequestTest implements TxCommandTest {
     @Test
     @Override
     public void responseCodeTest() throws CommandValidationException {
-        AreaStatusRequest request = new AreaStatusRequest(2);
+        AreaStatus request = new AreaStatus(2);
         assertEquals("RA002", request.getResponseCode());
     }
 
     @Test
     void areaTest() {
-        assertThrows(CommandValidationException.class, () -> new AreaStatusRequest(-1));
-        assertThrows(CommandValidationException.class, () -> new AreaStatusRequest(9));
+        assertThrows(CommandValidationException.class, () -> new AreaStatus(-1));
+        assertThrows(CommandValidationException.class, () -> new AreaStatus(9));
     }
 }

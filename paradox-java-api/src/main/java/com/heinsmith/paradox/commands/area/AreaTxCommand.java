@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.heinsmith.paradox.commands.area.status;
+package com.heinsmith.paradox.commands.area;
 
 import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
@@ -23,19 +23,18 @@ import com.heinsmith.paradox.commands.CommandValidationException;
 import com.heinsmith.paradox.commands.TxCommand;
 
 /**
- * Created by Hein Smith on 2017/03/24.
+ * Created by Hein Smith on 2017/10/16.
  */
-public class AreaStatusRequest extends TxCommand {
+public abstract class AreaTxCommand extends TxCommand {
 
     private int area;
 
-    public AreaStatusRequest(int area) throws CommandValidationException {
-        super(CommandId.REQUEST_AREA_STATUS);
+    public AreaTxCommand(CommandId commandId, int area) throws CommandValidationException {
+        super(commandId);
 
         if (CommonValidationUtils.invalidAreaNumber(area)) {
             throw new CommandValidationException();
         }
-
         this.area = area;
     }
 

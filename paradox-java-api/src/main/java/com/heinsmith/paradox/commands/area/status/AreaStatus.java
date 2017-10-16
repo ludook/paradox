@@ -17,14 +17,16 @@
 
 package com.heinsmith.paradox.commands.area.status;
 
-import com.heinsmith.paradox.commands.RxCommand;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.area.AreaTxCommand;
 
 /**
- * Created by Hein Smith on 2017/03/25.
+ * Created by Hein Smith on 2017/03/24.
  */
-public class AreaStatusResponse extends RxCommand {
+public class AreaStatus extends AreaTxCommand {
 
-    public AreaStatusResponse(String rawCommand) {
-        super(rawCommand);
+    public AreaStatus(int area) throws CommandValidationException {
+        super(CommandId.REQUEST_AREA_STATUS, area);
     }
 }
