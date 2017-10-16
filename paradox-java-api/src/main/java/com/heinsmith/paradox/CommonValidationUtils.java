@@ -18,6 +18,8 @@
 package com.heinsmith.paradox;
 
 import com.heinsmith.paradox.config.ConfigLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
@@ -26,28 +28,29 @@ import java.util.Properties;
  */
 public class CommonValidationUtils {
 
-    private static final int inputMax;
-    private static final int areaMax;
-    private static final int panelCodeMax;
-    private static final int panelCodeMin;
+    private static final int INPUT_MAX;
+    private static final int AREA_MAX;
+    private static final int PANEL_CODE_MAX;
+    private static final int PANEL_CODE_MIN;
+    private static final Logger LOG = LogManager.getLogger(CommonValidationUtils.class.getName());
 
     static {
         Properties configProperties = ConfigLoader.getConfig();
-        inputMax = parseString(configProperties.getProperty("inputMax"), 16);
-        areaMax = parseString(configProperties.getProperty("areaMax"), 8);
-        panelCodeMin = parseString(configProperties.getProperty("panelCodeMin"), 4);
-        panelCodeMax = parseString(configProperties.getProperty("panelCodeMax"), 6);
+        INPUT_MAX = parseString(configProperties.getProperty("inputMax"), 16);
+        AREA_MAX = parseString(configProperties.getProperty("areaMax"), 8);
+        PANEL_CODE_MIN = parseString(configProperties.getProperty("panelCodeMin"), 4);
+        PANEL_CODE_MAX = parseString(configProperties.getProperty("panelCodeMax"), 6);
     }
 
     private CommonValidationUtils() {
     }
 
     public static boolean invalidInputNumber(int number) {
-        return (number < 1 || number > inputMax);
+        return (number < 1 || number > INPUT_MAX);
     }
 
     public static boolean invalidPanelCode(char[] code) {
-        boolean result = (code == null || code.length < panelCodeMin || code.length > panelCodeMax);
+        boolean result = (code == null || code.length < PANEL_CODE_MIN || code.length > PANEL_CODE_MAX);
         if (!result) {
             for (char codeEntry : code) {
                 if (!Character.isDigit(codeEntry)) {
@@ -60,7 +63,7 @@ public class CommonValidationUtils {
     }
 
     public static boolean invalidAreaNumber(int area) {
-        return (area < 1 || area > areaMax);
+        return (area < 1 || area > AREA_MAX);
     }
 
     private static int parseString(String prop, int defaultValue) {
@@ -69,7 +72,7 @@ public class CommonValidationUtils {
             try {
                 result = Integer.parseInt(prop);
             } catch (NumberFormatException exception) {
-                result = defaultValue;
+                LOG.info("Invalid property", exception);
             }
         }
         return result;
