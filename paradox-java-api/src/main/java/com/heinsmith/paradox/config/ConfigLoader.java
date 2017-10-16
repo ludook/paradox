@@ -31,7 +31,7 @@ import java.util.Properties;
  */
 public class ConfigLoader {
 
-    private static final Logger logger = LogManager.getLogger(ConfigLoader.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ConfigLoader.class.getName());
 
     private ConfigLoader() {
     }
@@ -51,7 +51,7 @@ public class ConfigLoader {
                 try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
                     properties.load(fileInputStream);
                 } catch (IOException ioException) {
-                    logger.error(ioException);
+                    LOG.error(ioException);
                 }
             }
         }
