@@ -17,8 +17,38 @@
 
 package com.heinsmith.paradox.commands.area.label;
 
+import com.heinsmith.paradox.CommonValidationUtils;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.TxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaLabel {
+public class AreaLabel extends TxCommand {
+
+    int area;
+
+    public AreaLabel(int area) throws CommandValidationException {
+        super(CommandId.REQUEST_AREA_LABEL);
+
+        if (CommonValidationUtils.invalidAreaNumber(area)) {
+            throw new CommandValidationException();
+        }
+        this.area = area;
+    }
+
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", area);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", area);
+    }
+
+    public int getArea() {
+        return area;
+    }
 }

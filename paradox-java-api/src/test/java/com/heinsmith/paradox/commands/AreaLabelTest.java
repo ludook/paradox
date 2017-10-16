@@ -15,18 +15,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.heinsmith.paradox.commands.zone.label;
+package com.heinsmith.paradox.commands;
 
-import com.heinsmith.paradox.commands.CommandId;
-import com.heinsmith.paradox.commands.CommandValidationException;
-import com.heinsmith.paradox.commands.zone.ZoneTxCommand;
+import com.heinsmith.paradox.commands.area.label.AreaLabel;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Created by Hein Smith on 2017/03/24.
+ * Created by Hein Smith on 2017/10/16.
  */
-public class ZoneLabel extends ZoneTxCommand {
+public class AreaLabelTest implements TxCommandTest {
 
-    public ZoneLabel(int zone) throws CommandValidationException {
-        super(CommandId.REQUEST_ZONE_LABEL, zone);
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        AreaLabel areaLabel = new AreaLabel(6);
+        assertEquals(6, areaLabel.getArea());
+        assertEquals("AL006\r", areaLabel.getAscii());
+    }
+
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        AreaLabel areaLabel = new AreaLabel(4);
+        assertEquals("AL004", areaLabel.getResponseCode());
     }
 }

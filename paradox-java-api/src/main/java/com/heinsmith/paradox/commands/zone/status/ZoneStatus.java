@@ -17,8 +17,16 @@
 
 package com.heinsmith.paradox.commands.zone.status;
 
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.zone.ZoneTxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class ZoneStatus {
+public class ZoneStatus extends ZoneTxCommand {
+
+    public ZoneStatus(int zone) throws CommandValidationException {
+        super(CommandId.REQUEST_ZONE_STATUS, zone);
+    }
 }

@@ -15,18 +15,41 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.heinsmith.paradox.commands.zone.label;
+package com.heinsmith.paradox.commands.zone;
 
+import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
-import com.heinsmith.paradox.commands.zone.ZoneTxCommand;
+import com.heinsmith.paradox.commands.TxCommand;
 
 /**
- * Created by Hein Smith on 2017/03/24.
+ * Created by Hein Smith on 2017/10/16.
  */
-public class ZoneLabel extends ZoneTxCommand {
+public abstract class ZoneTxCommand extends TxCommand {
 
-    public ZoneLabel(int zone) throws CommandValidationException {
-        super(CommandId.REQUEST_ZONE_LABEL, zone);
+    private int zone;
+
+    public ZoneTxCommand(CommandId commandId, int zone) throws CommandValidationException {
+        super(commandId);
+
+        if (CommonValidationUtils.invalidZoneNumber(zone)) {
+            throw new CommandValidationException();
+        }
+
+        this.zone = zone;
+    }
+
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", zone);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", zone);
+    }
+
+    public int getZone() {
+        return zone;
     }
 }

@@ -17,28 +17,29 @@
 
 package com.heinsmith.paradox.commands;
 
+import com.heinsmith.paradox.commands.zone.label.ZoneLabel;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
- * Created by Hein Smith on 2017/05/31.
+ * Created by Hein Smith on 2017/10/16.
  */
-public enum CommandId {
+public class ZoneLabelTest implements TxCommandTest {
 
-    AREA_ARM("AA"),
-    AREA_QUICK_ARM("AQ"),
-    VIRTUAL_INPUT_OPEN("VO"),
-    VIRTUAL_INPUT_CLOSE("VC"),
-    REQUEST_AREA_STATUS("RA"),
-    REQUEST_ZONE_STATUS("RZ"),
-    REQUEST_ZONE_LABEL("RL"),
-    REQUEST_AREA_LABEL("AL"),
-    AREA_DISARM("AD");
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        ZoneLabel zoneLabel = new ZoneLabel(3);
+        assertEquals(3, zoneLabel.getZone());
+        assertEquals("RL003\r", zoneLabel.getAscii());
 
-    private String key;
-
-    CommandId(String key) {
-        this.key = key;
     }
 
-    public String getKey() {
-        return key;
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        ZoneLabel zoneLabel = new ZoneLabel(96);
+        assertEquals("RL096", zoneLabel.getResponseCode());
     }
 }

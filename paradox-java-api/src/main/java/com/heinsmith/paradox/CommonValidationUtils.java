@@ -32,6 +32,7 @@ public class CommonValidationUtils {
     private static final int AREA_MAX;
     private static final int PANEL_CODE_MAX;
     private static final int PANEL_CODE_MIN;
+    private static final int ZONE_MAX;
     private static final Logger LOG = LogManager.getLogger(CommonValidationUtils.class.getName());
 
     static {
@@ -40,6 +41,7 @@ public class CommonValidationUtils {
         AREA_MAX = parseString(configProperties.getProperty("areaMax"), 8);
         PANEL_CODE_MIN = parseString(configProperties.getProperty("panelCodeMin"), 4);
         PANEL_CODE_MAX = parseString(configProperties.getProperty("panelCodeMax"), 6);
+        ZONE_MAX = parseString(configProperties.getProperty("zoneMax"), 96);
     }
 
     private CommonValidationUtils() {
@@ -64,6 +66,10 @@ public class CommonValidationUtils {
 
     public static boolean invalidAreaNumber(int area) {
         return (area < 1 || area > AREA_MAX);
+    }
+
+    public static boolean invalidZoneNumber(int zone) {
+        return (zone < 1 || zone > ZONE_MAX);
     }
 
     private static int parseString(String prop, int defaultValue) {

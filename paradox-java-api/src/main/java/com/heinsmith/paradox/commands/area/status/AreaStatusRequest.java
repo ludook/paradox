@@ -17,33 +17,39 @@
 
 package com.heinsmith.paradox.commands.area.status;
 
-import com.heinsmith.paradox.ProtocolConstants;
+import com.heinsmith.paradox.CommonValidationUtils;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.TxCommand;
 
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaStatusRequest {
+public class AreaStatusRequest extends TxCommand {
 
     private int area;
 
-    public AreaStatusRequest(int area) {
+    public AreaStatusRequest(int area) throws CommandValidationException {
+        super(CommandId.REQUEST_AREA_STATUS);
+
+        if (CommonValidationUtils.invalidAreaNumber(area)) {
+            throw new CommandValidationException();
+        }
+
         this.area = area;
     }
 
-    public String build() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("RA");
-        String areaPadded = String.format("%003d", area);
-        builder.append(areaPadded);
-        builder.append(ProtocolConstants.COMMAND_END);
-        return builder.toString();
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", area);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", area);
     }
 
     public int getArea() {
         return area;
-    }
-
-    public void setArea(int area) {
-        this.area = area;
     }
 }
