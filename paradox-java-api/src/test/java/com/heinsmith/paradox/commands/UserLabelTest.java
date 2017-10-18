@@ -16,30 +16,28 @@
  */
 
 package com.heinsmith.paradox.commands;
+import com.heinsmith.paradox.commands.user.label.UserLabel;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Created by Hein Smith on 2017/05/31.
+ * Created by Hein Smith on 2017/10/18.
  */
-public enum CommandId {
+public class UserLabelTest implements TxCommandTest {
 
-    AREA_ARM("AA"),
-    AREA_QUICK_ARM("AQ"),
-    VIRTUAL_INPUT_OPEN("VO"),
-    VIRTUAL_INPUT_CLOSE("VC"),
-    REQUEST_AREA_STATUS("RA"),
-    REQUEST_ZONE_STATUS("RZ"),
-    REQUEST_ZONE_LABEL("RL"),
-    REQUEST_AREA_LABEL("AL"),
-    REQUEST_USER_LABEL("UL"),
-    AREA_DISARM("AD");
-
-    private String key;
-
-    CommandId(String key) {
-        this.key = key;
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        UserLabel userLabel = new UserLabel(500);
+        assertEquals(500, userLabel.getUserNumber());
+        assertEquals("UL500\r", userLabel.getAscii());
     }
 
-    public String getKey() {
-        return key;
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        UserLabel userLabel = new UserLabel(330);
+        assertEquals("UL330", userLabel.getResponseCode());
     }
 }

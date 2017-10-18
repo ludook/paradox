@@ -17,8 +17,38 @@
 
 package com.heinsmith.paradox.commands.user.label;
 
+import com.heinsmith.paradox.CommonValidationUtils;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.TxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class UserLabel {
+public class UserLabel extends TxCommand {
+
+    private int userNumber;
+
+    public UserLabel(int userNumber) throws CommandValidationException {
+        super(CommandId.REQUEST_USER_LABEL);
+
+        if(CommonValidationUtils.invalidUserNumber(userNumber)) {
+            throw new CommandValidationException();
+        }
+        this.userNumber = userNumber;
+    }
+
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", userNumber);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", userNumber);
+    }
+
+    public int getUserNumber() {
+        return userNumber;
+    }
 }
