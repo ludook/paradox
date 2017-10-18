@@ -17,8 +17,39 @@
 
 package com.heinsmith.paradox.commands.system;
 
+import com.heinsmith.paradox.CommonValidationUtils;
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.TxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class UtilityKey {
+public class UtilityKey extends TxCommand {
+
+    private int utilityKey;
+
+    public UtilityKey(int utilityKey) throws CommandValidationException {
+        super(CommandId.UTILITY_KEY);
+
+        if (CommonValidationUtils.invalidUtilityKey(utilityKey)) {
+            throw new CommandValidationException();
+        }
+
+        this.utilityKey = utilityKey;
+    }
+
+    @Override
+    protected String buildCommand() {
+        return String.format("%03d", utilityKey);
+    }
+
+    @Override
+    public String getResponseCode() {
+        return commandId.getKey() + String.format("%03d", utilityKey);
+    }
+
+    public int getUtilityKey() {
+        return utilityKey;
+    }
 }
