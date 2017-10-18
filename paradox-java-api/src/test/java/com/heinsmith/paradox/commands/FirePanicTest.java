@@ -15,18 +15,31 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.heinsmith.paradox.commands.panic;
+package com.heinsmith.paradox.commands;
 
-import com.heinsmith.paradox.commands.CommandId;
-import com.heinsmith.paradox.commands.CommandValidationException;
-import com.heinsmith.paradox.commands.area.AreaTxCommand;
+import com.heinsmith.paradox.commands.panic.FirePanic;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Created by Hein Smith on 2017/03/24.
+ * Created by Hein Smith on 2017/10/18.
  */
-public class MedicalPanic extends AreaTxCommand {
+public class FirePanicTest implements TxCommandTest {
 
-    public MedicalPanic(int area) throws CommandValidationException {
-        super(CommandId.MEDICAL_PANIC, area);
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        FirePanic firePanic = new FirePanic(3);
+        assertEquals("PF003\r", firePanic.getAscii());
+        assertEquals(3, firePanic.getArea());
+
+    }
+
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        FirePanic firePanic = new FirePanic(8);
+        assertEquals("PF008", firePanic.getResponseCode());
     }
 }

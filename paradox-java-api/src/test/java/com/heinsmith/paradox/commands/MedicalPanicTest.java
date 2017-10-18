@@ -17,33 +17,29 @@
 
 package com.heinsmith.paradox.commands;
 
+import com.heinsmith.paradox.commands.panic.MedicalPanic;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
- * Created by Hein Smith on 2017/05/31.
+ * Created by Hein Smith on 2017/10/18.
  */
-public enum CommandId {
+public class MedicalPanicTest implements TxCommandTest {
 
-    AREA_ARM("AA"),
-    AREA_QUICK_ARM("AQ"),
-    VIRTUAL_INPUT_OPEN("VO"),
-    VIRTUAL_INPUT_CLOSE("VC"),
-    REQUEST_AREA_STATUS("RA"),
-    REQUEST_ZONE_STATUS("RZ"),
-    REQUEST_ZONE_LABEL("RL"),
-    REQUEST_AREA_LABEL("AL"),
-    REQUEST_USER_LABEL("UL"),
-    EMERGENCY_PANIC("PE"),
-    MEDICAL_PANIC("PM"),
-    FIRE_PANIC("PF"),
-    SMOKE_RESET("SR"),
-    AREA_DISARM("AD");
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        MedicalPanic medicalPanic = new MedicalPanic(5);
+        assertEquals("PM005\r", medicalPanic.getAscii());
+        assertEquals(5, medicalPanic.getArea());
 
-    private String key;
-
-    CommandId(String key) {
-        this.key = key;
     }
 
-    public String getKey() {
-        return key;
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        MedicalPanic emergencyPanic = new MedicalPanic(1);
+        assertEquals("PM001", emergencyPanic.getResponseCode());
     }
 }
