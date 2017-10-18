@@ -17,30 +17,29 @@
 
 package com.heinsmith.paradox.commands;
 
+import com.heinsmith.paradox.commands.panic.EmergencyPanic;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
- * Created by Hein Smith on 2017/05/31.
+ * Created by Hein Smith on 2017/10/18.
  */
-public enum CommandId {
+public class EmergencyPanicTest implements TxCommandTest {
 
-    AREA_ARM("AA"),
-    AREA_QUICK_ARM("AQ"),
-    VIRTUAL_INPUT_OPEN("VO"),
-    VIRTUAL_INPUT_CLOSE("VC"),
-    REQUEST_AREA_STATUS("RA"),
-    REQUEST_ZONE_STATUS("RZ"),
-    REQUEST_ZONE_LABEL("RL"),
-    REQUEST_AREA_LABEL("AL"),
-    REQUEST_USER_LABEL("UL"),
-    EMERGENCY_PANIC("PE"),
-    AREA_DISARM("AD");
+    @Test
+    @Override
+    public void positiveConstructionTest() throws CommandValidationException {
+        EmergencyPanic emergencyPanic = new EmergencyPanic(2);
+        assertEquals("PE002\r", emergencyPanic.getAscii());
+        assertEquals(2, emergencyPanic.getArea());
 
-    private String key;
-
-    CommandId(String key) {
-        this.key = key;
     }
 
-    public String getKey() {
-        return key;
+    @Test
+    @Override
+    public void responseCodeTest() throws CommandValidationException {
+        EmergencyPanic emergencyPanic = new EmergencyPanic(1);
+        assertEquals("PE001", emergencyPanic.getResponseCode());
     }
 }

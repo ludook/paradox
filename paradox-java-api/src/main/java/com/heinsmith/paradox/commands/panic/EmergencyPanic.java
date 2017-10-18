@@ -17,8 +17,16 @@
 
 package com.heinsmith.paradox.commands.panic;
 
+import com.heinsmith.paradox.commands.CommandId;
+import com.heinsmith.paradox.commands.CommandValidationException;
+import com.heinsmith.paradox.commands.area.AreaTxCommand;
+
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class EmergencyPanic {
+public class EmergencyPanic extends AreaTxCommand {
+
+    public EmergencyPanic(int area) throws CommandValidationException {
+        super(CommandId.EMERGENCY_PANIC, area);
+    }
 }
