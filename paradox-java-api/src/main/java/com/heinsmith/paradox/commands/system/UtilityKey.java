@@ -27,29 +27,29 @@ import com.heinsmith.paradox.commands.TxCommand;
  */
 public class UtilityKey extends TxCommand {
 
-    private int utilityKey;
+    private int keyNumber;
 
-    public UtilityKey(int utilityKey) throws CommandValidationException {
+    public UtilityKey(int keyNumber) throws CommandValidationException {
         super(CommandId.UTILITY_KEY);
 
-        if (CommonValidationUtils.invalidUtilityKey(utilityKey)) {
+        if (CommonValidationUtils.invalidUtilityKey(keyNumber)) {
             throw new CommandValidationException();
         }
 
-        this.utilityKey = utilityKey;
+        this.keyNumber = keyNumber;
     }
 
     @Override
     protected String buildCommand() {
-        return String.format("%03d", utilityKey);
+        return String.format("%03d", keyNumber);
     }
 
     @Override
     public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", utilityKey);
+        return commandId.getKey() + String.format("%03d", keyNumber);
     }
 
-    public int getUtilityKey() {
-        return utilityKey;
+    public int getKeyNumber() {
+        return keyNumber;
     }
 }

@@ -31,7 +31,7 @@ public class UtilityKeyTest implements TxCommandTest {
     @Override
     public void positiveConstructionTest() throws CommandValidationException {
         UtilityKey utilityKey = new UtilityKey(200);
-        assertEquals(200, utilityKey.getUtilityKey());
+        assertEquals(200, utilityKey.getKeyNumber());
         assertEquals("UK200\r", utilityKey.getAscii());
     }
 
