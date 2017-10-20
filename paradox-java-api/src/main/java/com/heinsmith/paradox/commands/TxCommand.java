@@ -53,7 +53,14 @@ public abstract class TxCommand {
         return command;
     }
 
-    public abstract String getResponseCode();
+    public String getResponseCode() {
+        String ascii = getAscii();
+        String result = null;
+        if(ascii != null && ascii.length() >= 5) {
+            result = ascii.substring(0, 5);
+        }
+        return result;
+    }
 
     public void addResponseHandler(final ResponseHandler responseHandler) {
         responseHandlers.add(responseHandler);

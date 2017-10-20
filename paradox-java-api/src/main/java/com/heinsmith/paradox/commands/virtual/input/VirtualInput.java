@@ -49,8 +49,4 @@ public abstract class VirtualInput extends TxCommand {
         return String.format("%03d", inputNumber);
     }
 
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", inputNumber);
-    }
 }

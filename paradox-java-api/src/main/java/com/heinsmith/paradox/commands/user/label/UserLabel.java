@@ -32,7 +32,7 @@ public class UserLabel extends TxCommand {
     public UserLabel(int userNumber) throws CommandValidationException {
         super(CommandId.REQUEST_USER_LABEL);
 
-        if(CommonValidationUtils.invalidUserNumber(userNumber)) {
+        if (CommonValidationUtils.invalidUserNumber(userNumber)) {
             throw new CommandValidationException();
         }
         this.userNumber = userNumber;
@@ -41,11 +41,6 @@ public class UserLabel extends TxCommand {
     @Override
     protected String buildCommand() {
         return String.format("%03d", userNumber);
-    }
-
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", userNumber);
     }
 
     public int getUserNumber() {

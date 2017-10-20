@@ -44,11 +44,6 @@ public abstract class ZoneTxCommand extends TxCommand {
         return String.format("%03d", zone);
     }
 
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", zone);
-    }
-
     public int getZone() {
         return zone;
     }

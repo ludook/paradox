@@ -43,11 +43,6 @@ public abstract class AreaTxCommand extends TxCommand {
         return String.format("%03d", area);
     }
 
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", area);
-    }
-
     public int getArea() {
         return area;
     }

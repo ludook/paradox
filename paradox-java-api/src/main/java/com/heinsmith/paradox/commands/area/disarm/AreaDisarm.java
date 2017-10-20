@@ -53,11 +53,6 @@ public class AreaDisarm extends TxCommand {
         return builder.toString();
     }
 
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", area);
-    }
-
     public int getArea() {
         return area;
     }

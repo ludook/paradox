@@ -34,15 +34,15 @@ public abstract class AreaArmBase extends TxCommand {
     public AreaArmBase(CommandId commandId, int area, ArmType armType, char[] password) throws CommandValidationException {
         super(commandId);
 
-        if(CommonValidationUtils.invalidAreaNumber(area)) {
+        if (CommonValidationUtils.invalidAreaNumber(area)) {
             throw new CommandValidationException();
         }
 
-        if(armType == null) {
+        if (armType == null) {
             throw new CommandValidationException();
         }
 
-        if(CommonValidationUtils.invalidPanelCode(password)) {
+        if (CommonValidationUtils.invalidPanelCode(password)) {
             throw new CommandValidationException();
         }
 
@@ -53,16 +53,11 @@ public abstract class AreaArmBase extends TxCommand {
 
     @Override
     protected String buildCommand() {
-        StringBuilder builder =  new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append(String.format("%03d", area));
         builder.append(armType.getKey());
         builder.append(password);
         return builder.toString();
-    }
-
-    @Override
-    public String getResponseCode() {
-        return commandId.getKey() + String.format("%03d", area);
     }
 
     public int getArea() {
