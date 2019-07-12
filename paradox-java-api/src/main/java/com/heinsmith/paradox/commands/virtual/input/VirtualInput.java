@@ -26,7 +26,7 @@ import com.heinsmith.paradox.commands.TxCommand;
 /**
  * Created by Hein Smith on 2017/10/13.
  */
-public abstract class VirtualInput extends TxCommand {
+public abstract class VirtualInput extends TxCommand<Void> {
 
     private int inputNumber;
 
@@ -45,8 +45,12 @@ public abstract class VirtualInput extends TxCommand {
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         return String.format("%03d", inputNumber);
     }
 
+    @Override
+    public void parseResponse(String response) {
+        // TODO
+    }
 }

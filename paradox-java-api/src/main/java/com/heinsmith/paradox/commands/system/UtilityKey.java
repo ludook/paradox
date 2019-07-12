@@ -40,8 +40,12 @@ public class UtilityKey extends TxCommand {
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         return String.format("%03d", keyNumber);
+    }
+
+    @Override
+    public void parseResponse(String repsonse) {
     }
 
     @Override

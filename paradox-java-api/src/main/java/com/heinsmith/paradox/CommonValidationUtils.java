@@ -17,35 +17,32 @@
 
 package com.heinsmith.paradox;
 
-import com.heinsmith.paradox.config.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Properties;
 
 /**
  * Created by Hein Smith on 2017/10/12.
  */
 public class CommonValidationUtils {
 
-    private static final int INPUT_MAX;
-    private static final int AREA_MAX;
-    private static final int PANEL_CODE_MAX;
-    private static final int PANEL_CODE_MIN;
-    private static final int ZONE_MAX;
-    private static final int USER_MAX;
-    private static final int UTILITY_KEY_MAX;
+    private static final int INPUT_MAX = 16;
+    private static final int AREA_MAX = 8;
+    private static final int PANEL_CODE_MAX = 6;
+    private static final int PANEL_CODE_MIN = 4;
+    private static final int ZONE_MAX = 96;
+    private static final int USER_MAX = 999;
+    private static final int UTILITY_KEY_MAX = 251;
     private static final Logger LOG = LogManager.getLogger(CommonValidationUtils.class.getName());
 
     static {
-        Properties configProperties = ConfigLoader.getConfig();
-        INPUT_MAX = parseString(configProperties.getProperty("inputMax"), 16);
-        AREA_MAX = parseString(configProperties.getProperty("areaMax"), 8);
-        PANEL_CODE_MIN = parseString(configProperties.getProperty("panelCodeMin"), 4);
-        PANEL_CODE_MAX = parseString(configProperties.getProperty("panelCodeMax"), 6);
-        ZONE_MAX = parseString(configProperties.getProperty("zoneMax"), 96);
-        USER_MAX = parseString(configProperties.getProperty("userMax"), 999);
-        UTILITY_KEY_MAX = parseString(configProperties.getProperty("utilityKeyMax"), 251);
+//        Properties configProperties = new ConfigLoader().getConfig();
+//        INPUT_MAX = parseString(configProperties.getProperty("inputMax"), 16);
+//        AREA_MAX = parseString(configProperties.getProperty("areaMax"), 8);
+//        PANEL_CODE_MIN = parseString(configProperties.getProperty("panelCodeMin"), 4);
+//        PANEL_CODE_MAX = parseString(configProperties.getProperty("panelCodeMax"), 6);
+//        ZONE_MAX = parseString(configProperties.getProperty("zoneMax"), 96);
+//        USER_MAX = parseString(configProperties.getProperty("userMax"), 999);
+//        UTILITY_KEY_MAX = parseString(configProperties.getProperty("utilityKeyMax"), 251);
     }
 
     private CommonValidationUtils() {

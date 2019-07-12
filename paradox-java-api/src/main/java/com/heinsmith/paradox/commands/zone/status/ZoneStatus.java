@@ -24,9 +24,43 @@ import com.heinsmith.paradox.commands.zone.ZoneTxCommand;
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class ZoneStatus extends ZoneTxCommand {
+public class ZoneStatus extends ZoneTxCommand<ZoneStatus.ZoneStatusResponse> {
 
     public ZoneStatus(int zone) throws CommandValidationException {
         super(CommandId.REQUEST_ZONE_STATUS, zone);
+    }
+
+    @Override
+    public void parseResponse(String response) {
+        this.response = new ZoneStatus.ZoneStatusResponse(response);
+    }
+
+    public enum State {
+        CLOSED("C"), OPENED("O"), TILT("T"), FIRE_LOOP_DEFECT("F");
+
+        private String state;
+
+        State(String state) {
+            this.state = state;
+        }
+
+        public static State parse(String state) {
+            for (State s : State.values()) {
+                if (s.state.equals(state)) {
+                    return s;
+                }
+            }
+            throw new IllegalArgumentException("unkown status: " + state);
+        }
+    }
+
+    public class ZoneStatusResponse {
+
+        public State state;
+
+        public ZoneStatusResponse(String response) {
+            state = State.parse(String.valueOf(response.charAt(0)));
+        }
+
     }
 }

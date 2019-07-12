@@ -17,6 +17,7 @@
     <modules>
         <module>paradox-java-api</module>
         <module>paradox-java-comms</module>
+        <module>paradox-java-driver</module>
     </modules>
 
 </project>

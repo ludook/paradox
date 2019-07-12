@@ -68,7 +68,7 @@ public class TwoWaySerialComm {
         }
     }
 
-    private static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
+    public static void runCommand(HashMap<String, ArrayDeque<TxCommand>> txRxQueue, SerialPort comPort, final TxCommand txCommand) {
         OutputStream outputStream = comPort.getOutputStream();
         try {
             byte[] panelBytes = txCommand.getAscii().getBytes();

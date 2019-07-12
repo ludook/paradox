@@ -24,7 +24,7 @@ import com.heinsmith.paradox.commands.area.AreaTxCommand;
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaLabel extends AreaTxCommand {
+public class AreaLabel extends AreaTxCommand<Void> {
 
     public AreaLabel(int area) throws CommandValidationException {
         super(CommandId.REQUEST_AREA_LABEL, area);

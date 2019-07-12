@@ -84,11 +84,15 @@ class CommandTest {
 
         assertThrows(CommandValidationException.class, () -> {
 
-            TxCommand txCommand = new TxCommand(null) {
+            TxCommand txCommand = new TxCommand<Void>(null) {
 
                 @Override
-                protected String buildCommand() {
+                protected String buildCommand(boolean obfuscate) {
                     return null;
+                }
+
+                @Override
+                public void parseResponse(String repsonse) {
                 }
 
                 @Override

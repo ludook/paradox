@@ -39,8 +39,13 @@ public class UserLabel extends TxCommand {
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         return String.format("%03d", userNumber);
+    }
+
+    @Override
+    public void parseResponse(String repsonse) {
+        //TODO
     }
 
     public int getUserNumber() {

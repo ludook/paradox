@@ -21,51 +21,48 @@ import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
 import com.heinsmith.paradox.commands.TxCommand;
+import com.heinsmith.paradox.commands.area.AreaTxCommand;
 
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public abstract class AreaArmBase extends TxCommand {
+public abstract class AreaArmBase extends AreaTxCommand<Void> {
 
-    private int area;
     private char[] password;
     private ArmType armType;
 
-    public AreaArmBase(CommandId commandId, int area, ArmType armType, char[] password) throws CommandValidationException {
-        super(commandId);
-
-        if (CommonValidationUtils.invalidAreaNumber(area)) {
-            throw new CommandValidationException();
-        }
+    public AreaArmBase(CommandId commandId, int area, ArmType armType) throws CommandValidationException {
+        super(commandId, area);
 
         if (armType == null) {
             throw new CommandValidationException();
         }
 
+        this.password = "".toCharArray();
+        this.armType = armType;
+    }
+
+    public AreaArmBase(CommandId commandId, int area, ArmType armType, char[] password) throws CommandValidationException {
+        this(commandId, area, armType);
+
         if (CommonValidationUtils.invalidPanelCode(password)) {
             throw new CommandValidationException();
         }
 
-        this.armType = armType;
-        this.area = area;
         this.password = password;
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("%03d", area));
+        builder.append(super.buildCommand(obfuscate));
         builder.append(armType.getKey());
-        builder.append(password);
+        builder.append(getPassword(obfuscate));
         return builder.toString();
     }
 
-    public int getArea() {
-        return area;
-    }
-
-    public char[] getPassword() {
-        return password;
+    public char[] getPassword(boolean obfuscate) {
+        return obfuscate ? "****".toCharArray() : password;
     }
 
     public ArmType getArmType() {

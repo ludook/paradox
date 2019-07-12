@@ -25,9 +25,9 @@ import com.heinsmith.paradox.commands.TxCommand;
 /**
  * Created by Hein Smith on 2017/10/16.
  */
-public abstract class AreaTxCommand extends TxCommand {
+public abstract class AreaTxCommand<T> extends TxCommand<T> {
 
-    private int area;
+    protected int area;
 
     public AreaTxCommand(CommandId commandId, int area) throws CommandValidationException {
         super(commandId);
@@ -39,11 +39,15 @@ public abstract class AreaTxCommand extends TxCommand {
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         return String.format("%03d", area);
     }
 
     public int getArea() {
         return area;
+    }
+
+    @Override
+    public void parseResponse(String response) {
     }
 }

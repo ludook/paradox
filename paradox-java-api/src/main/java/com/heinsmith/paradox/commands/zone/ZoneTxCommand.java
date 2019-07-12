@@ -25,7 +25,7 @@ import com.heinsmith.paradox.commands.TxCommand;
 /**
  * Created by Hein Smith on 2017/10/16.
  */
-public abstract class ZoneTxCommand extends TxCommand {
+public abstract class ZoneTxCommand<T> extends TxCommand<T> {
 
     private int zone;
 
@@ -40,11 +40,16 @@ public abstract class ZoneTxCommand extends TxCommand {
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         return String.format("%03d", zone);
     }
 
     public int getZone() {
         return zone;
+    }
+
+    @Override
+    public void parseResponse(String response) {
+        // TODO
     }
 }

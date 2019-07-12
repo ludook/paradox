@@ -17,8 +17,43 @@
 
 package com.heinsmith.paradox.commands.system;
 
-/**
- * Created by Hein Smith on 2017/03/24.
- */
+import com.heinsmith.paradox.commands.system.event.action.ArmByKey;
+
 public class SystemEvent {
+
+    EventGroupId groupId;
+
+    int group;
+    int number;
+    int area;
+
+    public SystemEvent(Integer number, Integer area) {
+        this.groupId = getClass().getAnnotation(ParadoxEvent.class).value();
+        this.group = groupId.group;
+        this.number = number;
+        this.area = area;
+    }
+
+    public SystemEvent(Integer group, Integer number, Integer area) {
+        this.group = group;
+        this.number = number;
+        this.area = area;
+    }
+
+    public EventGroupId getGroupId() {
+        return groupId;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
 }

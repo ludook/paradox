@@ -32,26 +32,27 @@ import java.util.Properties;
 public class ConfigLoader {
 
     private static final Logger LOG = LogManager.getLogger(ConfigLoader.class.getName());
+    Properties properties;
 
-    private ConfigLoader() {
+    public ConfigLoader() {
     }
 
-    public static Properties getConfig() {
+    public synchronized Properties getConfig() {
+        if (properties == null) {
+            properties = new Properties();
+            URL fileUrl = getClass().getClassLoader().getResource("paradox.properties");
 
-        Properties properties = new Properties();
-        ClassLoader classLoader = ConfigLoader.class.getClassLoader();
-        URL fileUrl = classLoader.getResource("paradox.properties");
+            if (fileUrl != null) {
+                String fileString = fileUrl.getFile();
 
-        if (fileUrl != null) {
-            String fileString = fileUrl.getFile();
+                if (fileString != null) {
+                    File configFile = new File(fileString);
 
-            if (fileString != null) {
-                File configFile = new File(fileString);
-
-                try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
-                    properties.load(fileInputStream);
-                } catch (IOException ioException) {
-                    LOG.error(ioException);
+                    try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
+                        properties.load(fileInputStream);
+                    } catch (IOException ioException) {
+                        LOG.error(ioException);
+                    }
                 }
             }
         }

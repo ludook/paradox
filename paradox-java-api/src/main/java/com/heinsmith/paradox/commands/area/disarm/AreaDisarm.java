@@ -20,44 +20,33 @@ package com.heinsmith.paradox.commands.area.disarm;
 import com.heinsmith.paradox.CommonValidationUtils;
 import com.heinsmith.paradox.commands.CommandId;
 import com.heinsmith.paradox.commands.CommandValidationException;
-import com.heinsmith.paradox.commands.TxCommand;
+import com.heinsmith.paradox.commands.area.AreaTxCommand;
 
 /**
  * Created by Hein Smith on 2017/03/24.
  */
-public class AreaDisarm extends TxCommand {
+public class AreaDisarm extends AreaTxCommand<Void> {
 
-    private int area;
     private char[] password;
 
     public AreaDisarm(int area, char[] password) throws CommandValidationException {
-        super(CommandId.AREA_DISARM);
-
-        if (CommonValidationUtils.invalidAreaNumber(area)) {
-            throw new CommandValidationException();
-        }
+        super(CommandId.AREA_DISARM, area);
 
         if (CommonValidationUtils.invalidPanelCode(password)) {
             throw new CommandValidationException();
         }
-
-        this.area = area;
         this.password = password;
     }
 
     @Override
-    protected String buildCommand() {
+    protected String buildCommand(boolean obfuscate) {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("%03d", area));
-        builder.append(password);
+        builder.append(super.buildCommand(obfuscate));
+        builder.append(getPassword(obfuscate));
         return builder.toString();
     }
 
-    public int getArea() {
-        return area;
-    }
-
-    public char[] getPassword() {
-        return password;
+    public char[] getPassword(boolean obfuscate) {
+        return obfuscate ? "****".toCharArray() : password;
     }
 }

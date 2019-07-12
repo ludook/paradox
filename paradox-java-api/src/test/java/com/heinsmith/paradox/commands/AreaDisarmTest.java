@@ -36,7 +36,7 @@ class AreaDisarmTest implements TxCommandTest {
     public void positiveConstructionTest() throws CommandValidationException {
         AreaDisarm areaDisarm = new AreaDisarm(1, testCode);
         assertEquals(1, areaDisarm.getArea());
-        assertSame(testCode, areaDisarm.getPassword());
+        assertSame(testCode, areaDisarm.getPassword(false));
     }
 
     @Override

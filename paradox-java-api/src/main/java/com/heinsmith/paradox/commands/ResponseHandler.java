@@ -20,7 +20,7 @@ package com.heinsmith.paradox.commands;
 /**
  * Created by Hein Smith on 2017/10/10.
  */
-public interface ResponseHandler {
+public interface ResponseHandler<T> {
 
-    void fireResponse(TxCommand txCommand, boolean success);
+    void fireResponse(TxCommand<?> txCommand, boolean success);
 }

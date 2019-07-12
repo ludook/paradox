@@ -25,7 +25,7 @@ import com.heinsmith.paradox.commands.CommandValidationException;
  */
 public class AreaQuickArm extends AreaArmBase {
 
-    public AreaQuickArm(int area, ArmType armType, char[] password) throws CommandValidationException {
-        super(CommandId.AREA_QUICK_ARM, area, armType, password);
+    public AreaQuickArm(int area, ArmType armType) throws CommandValidationException {
+        super(CommandId.AREA_QUICK_ARM, area, armType);
     }
 }

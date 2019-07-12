@@ -21,52 +21,87 @@ import com.heinsmith.paradox.ProtocolConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Hein Smith on 2017/05/31.
  */
-public abstract class TxCommand {
+public abstract class TxCommand<T> {
 
+    private final List<ResponseHandler<T>> responseHandlers = new ArrayList<>();
     protected CommandId commandId;
+    protected T response;
+    protected Timer timer;
     private String command;
-    private final List<ResponseHandler> responseHandlers = new ArrayList<>();
+    private String string;
+
+    private TimeoutHandler<T> timeoutHandler;
 
     public TxCommand(CommandId commandId) throws CommandValidationException {
-        if(commandId == null) {
+        if (commandId == null) {
             throw new CommandValidationException();
         }
         this.commandId = commandId;
+        timer = new Timer();
+        timer.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (timeoutHandler != null) {
+                            timeoutHandler.timeout(TxCommand.this);
+                        }
+                    }
+                },
+                3000
+        );
     }
 
-    protected abstract String buildCommand();
+    protected abstract String buildCommand(boolean obfuscate);
+
+    public abstract void parseResponse(String repsonse);
+
+    public T getResponse() {
+        return response;
+    }
 
     public String getAscii() {
-
         if (command == null) {
-            String childCommand = buildCommand();
-            StringBuilder builder = new StringBuilder();
-            builder.append(commandId.getKey());
-            builder.append(childCommand);
-            builder.append(ProtocolConstants.COMMAND_END);
-            command = builder.toString();
+            command = commandId.getKey() + buildCommand(false) + ProtocolConstants.COMMAND_END;
         }
         return command;
+    }
+
+    public String toString() {
+        if (string == null) {
+            string = commandId.getKey() + buildCommand(true) + ProtocolConstants.COMMAND_END;
+        }
+        return string;
     }
 
     public String getResponseCode() {
         String ascii = getAscii();
         String result = null;
-        if(ascii != null && ascii.length() >= 5) {
+        if (ascii != null && ascii.length() >= 5) {
             result = ascii.substring(0, 5);
         }
         return result;
     }
 
-    public void addResponseHandler(final ResponseHandler responseHandler) {
+    public void addResponseHandler(final ResponseHandler<T> responseHandler) {
         responseHandlers.add(responseHandler);
     }
 
-    public List<ResponseHandler> getResponseHandlers() {
+    public void setTimeoutHandler(final TimeoutHandler<T> timeoutHandler) {
+        this.timeoutHandler = timeoutHandler;
+    }
+
+    public List<ResponseHandler<T>> getResponseHandlers() {
         return responseHandlers;
+    }
+
+    public void ended() {
+        timer.cancel();
+        timer.purge();
     }
 }

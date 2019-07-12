@@ -38,7 +38,7 @@ class AreaArmTest implements TxCommandTest {
         assertEquals("AA004A1234\r", areaArm.getAscii());
         assertEquals(ArmType.REGULAR_ARM, areaArm.getArmType());
         assertEquals(4, areaArm.getArea());
-        assertSame(testCode, areaArm.getPassword());
+        assertSame(testCode, areaArm.getPassword(false));
     }
 
     @Test
@@ -68,13 +68,13 @@ class AreaArmTest implements TxCommandTest {
     }
 
     @Test
-    void areaTest() throws CommandValidationException {
+    void areaTest() {
         assertThrows(CommandValidationException.class, () -> new AreaArm(0, ArmType.REGULAR_ARM, testCode));
         assertThrows(CommandValidationException.class, () -> new AreaArm(9, ArmType.REGULAR_ARM, testCode));
     }
 
     @Test
-    void codeTest() throws CommandValidationException {
+    void codeTest() {
         assertThrows(CommandValidationException.class, () -> {
             char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
             new AreaArm(1, ArmType.REGULAR_ARM, longCode);

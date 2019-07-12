@@ -30,20 +30,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class AreaQuickArmTest implements TxCommandTest {
 
-    private static final char[] testCode = new char[]{'1', '2', '3', '4'};
-
     @Override
     public void positiveConstructionTest() throws CommandValidationException {
-        AreaQuickArm areaQuickArm = new AreaQuickArm(2, ArmType.REGULAR_ARM, testCode);
+        AreaQuickArm areaQuickArm = new AreaQuickArm(2, ArmType.REGULAR_ARM);
         assertEquals("AQ002A1234\r", areaQuickArm.getAscii());
         assertEquals(2, areaQuickArm.getArea());
         assertEquals(ArmType.REGULAR_ARM, areaQuickArm.getArmType());
-        assertEquals(testCode, areaQuickArm.getPassword());
+        assertEquals("", areaQuickArm.getPassword(false));
     }
 
     @Override
     public void responseCodeTest() throws CommandValidationException {
-        AreaQuickArm areaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM, testCode);
+        AreaQuickArm areaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM);
         assertEquals("AQ001", areaQuickArm.getResponseCode());
     }
 
@@ -51,38 +49,25 @@ class AreaQuickArmTest implements TxCommandTest {
     @Test
     void armTypesTest() throws CommandValidationException {
 
-        AreaQuickArm areaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM, testCode);
-        assertEquals("AQ001A1234\r", areaQuickArm.getAscii());
+        AreaQuickArm areaQuickArm = new AreaQuickArm(1, ArmType.REGULAR_ARM);
+        assertEquals("AQ001A\r", areaQuickArm.getAscii());
 
-        areaQuickArm = new AreaQuickArm(2, ArmType.FORCE_ARM, testCode);
-        assertEquals("AQ002F1234\r", areaQuickArm.getAscii());
+        areaQuickArm = new AreaQuickArm(2, ArmType.FORCE_ARM);
+        assertEquals("AQ002F\r", areaQuickArm.getAscii());
 
-        areaQuickArm = new AreaQuickArm(3, ArmType.INSTANT_ARM, testCode);
-        assertEquals("AQ003I1234\r", areaQuickArm.getAscii());
+        areaQuickArm = new AreaQuickArm(3, ArmType.INSTANT_ARM);
+        assertEquals("AQ003I\r", areaQuickArm.getAscii());
 
-        areaQuickArm = new AreaQuickArm(4, ArmType.STAY_ARM, testCode);
-        assertEquals("AQ004S1234\r", areaQuickArm.getAscii());
+        areaQuickArm = new AreaQuickArm(4, ArmType.STAY_ARM);
+        assertEquals("AQ004S\r", areaQuickArm.getAscii());
 
-        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(2, null, testCode));
+        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(2, null));
     }
 
     @Test
     void areaTest() throws CommandValidationException {
-        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(0, ArmType.REGULAR_ARM, testCode));
-        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(9, ArmType.REGULAR_ARM, testCode));
+        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(0, ArmType.REGULAR_ARM));
+        assertThrows(CommandValidationException.class, () -> new AreaQuickArm(9, ArmType.REGULAR_ARM));
     }
 
-
-    @Test
-    void codeTest() throws CommandValidationException {
-        assertThrows(CommandValidationException.class, () -> {
-            char[] longCode = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
-            new AreaQuickArm(1, ArmType.REGULAR_ARM, longCode);
-        });
-
-        assertThrows(CommandValidationException.class, () -> {
-            char[] shortCode = new char[]{};
-            new AreaQuickArm(4, ArmType.REGULAR_ARM, shortCode);
-        });
-    }
 }
