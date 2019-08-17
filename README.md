@@ -33,7 +33,7 @@ The software requirements:
 ## Authors
 
 * **Hein Smith** - *Initial work* - [Paradox](https://github.com/somejavadev/paradox)
-* **lukdoo** - *some additionnal features* - [Paradox](https://github.com/lukdoo/paradox)
+* **ludook** - *some additionnal features* - [Paradox](https://github.com/ludook/paradox)
 
 See also the list of [contributors](https://github.com/somejavadev/paradox/graphs/contributors) who participated in this project.
 
