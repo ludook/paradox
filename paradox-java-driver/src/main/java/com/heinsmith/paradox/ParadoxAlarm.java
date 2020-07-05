@@ -15,10 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class ParadoxAlarm implements CommandListener {
@@ -28,9 +26,9 @@ public class ParadoxAlarm implements CommandListener {
     SerialPort comPort;
     int nbCmdTimeout;
 
-    HashMap<String, ArrayDeque<TxCommand>> txQueue = new HashMap<>();
+    Map<String, ArrayDeque<TxCommand<?>>> txQueue = new ConcurrentHashMap<>();
 
-    HashMap<Class<? extends SystemEvent>, Set<EventListener>> eventListeners = new HashMap<>();
+    Map<Class<? extends SystemEvent>, Set<EventListener>> eventListeners = new ConcurrentHashMap<>();
 
     public ParadoxAlarm(String commPort, int baudRate) {
         EventFactory.init();
@@ -150,7 +148,7 @@ public class ParadoxAlarm implements CommandListener {
             log.info("rx without content: " + rxCommand);
             String responseCode = rxCommand.substring(0, indexOf);
             txQueue.computeIfPresent(responseCode, (responseKey, txCommands) -> {
-                TxCommand<Void> txCommand = txCommands.pop();
+                TxCommand<Void> txCommand = (TxCommand<Void>) txCommands.pop();
                 txCommand.ended();
                 txCommand.getResponseHandlers().forEach(responseHandler -> responseHandler.fireResponse(txCommand, rxCommand.endsWith(ProtocolConstants.COMMAND_OK)));
                 return txCommands;
