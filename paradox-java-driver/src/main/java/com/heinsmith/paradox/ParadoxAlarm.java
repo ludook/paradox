@@ -15,10 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -87,21 +84,20 @@ public class ParadoxAlarm implements CommandListener {
         });
     }
 
-    private void timeout(TxCommand<?> txCommand) throws IOException {
+    private void timeout(TxCommand<?> txCommand) {
         synchronized (comPort) {
-            if (nbCmdTimeout < NB_FAIL_FOR_COM_RESTART) {
-                log.warn("timeout for tx: " + txCommand);
-                log.info("clear waiting for tx: " + txCommand);
-                txQueue.computeIfPresent(txCommand.getResponseCode(), (s, txCommands) -> {
-                    txCommands.forEach(txCommand1 -> txCommand1.ended());
-                    txCommands.clear();
-                    return txCommands;
-                });
-                nbCmdTimeout++;
-                log.warn("nb reinit: " + nbCmdTimeout);
-            } else {
-                nbCmdTimeout = 0;
-                try {
+            try {
+                if (nbCmdTimeout < NB_FAIL_FOR_COM_RESTART) {
+                    log.warn("timeout for tx: " + txCommand);
+                    log.info("clear waiting for tx: " + txCommand);
+                    txQueue.computeIfPresent(txCommand.getResponseCode(), (s, txCommands) -> {
+                        txCommands.forEach(txCommand1 -> txCommand1.ended());
+                        txCommands.clear();
+                        return txCommands;
+                    });
+                } else {
+                    nbCmdTimeout = 0;
+
                     log.error("paradox alarm not responding");
                     log.warn("clear Tx Queues...");
                     txQueue.keySet().forEach(k -> txQueue.get(k).forEach(tx -> tx.ended()));
@@ -109,10 +105,15 @@ public class ParadoxAlarm implements CommandListener {
                     log.warn("close com port...");
                     comPort.closePort();
                     waitFor(1000);
-                } catch (Exception ex) {
-                    log.error(ex);
+
+                    log.warn("open com port...");
+                    comPort.openPort();
+                    waitFor(1000);
                 }
-                throw new IOException("paradox alarm not responding on: " + comPort.getSystemPortName());
+                nbCmdTimeout++;
+                log.warn("nb reinit: " + nbCmdTimeout);
+            } catch (Exception e) {
+                log.error(e);
             }
         }
     }
