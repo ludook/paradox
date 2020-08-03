@@ -105,8 +105,8 @@ public class ParadoxAlarm implements CommandListener {
 
         txCommand.setTimeoutHandler(txCommand1 -> {
             log.warn("timeout on cmd: " + txCommand1);
-            errorCommListener.onTimeout(txCommand1);
             clear(txCommand1);
+            errorCommListener.onTimeout(txCommand1);
         });
         log.info("send: " + txCommand);
         outputStream.write(panelBytes);
