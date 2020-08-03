@@ -15,23 +15,28 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class ParadoxAlarm implements CommandListener {
 
-    public final static int NB_FAIL_FOR_COM_RESTART = 10;
     protected static final Logger log = LogManager.getLogger(ParadoxAlarm.class.getName());
-    SerialPort comPort;
-    int nbCmdTimeout;
+    final SerialPort comPort;
+    SuccessCommListener successCommListener;
+    ErrorCommListener errorCommListener;
 
     Map<String, ArrayDeque<TxCommand<?>>> txQueue = new ConcurrentHashMap<>();
 
     Map<Class<? extends SystemEvent>, Set<EventListener>> eventListeners = new ConcurrentHashMap<>();
 
-    public ParadoxAlarm(String commPort, int baudRate) {
+    public ParadoxAlarm(String commPort, int baudRate, SuccessCommListener successCommListener, ErrorCommListener errorCommListener) {
         EventFactory.init();
+        this.successCommListener = successCommListener;
+        this.errorCommListener = errorCommListener;
         comPort = SerialPort.getCommPort(commPort);
         comPort.setBaudRate(baudRate);
         comPort.setFlowControl(SerialPort.FLOW_CONTROL_DISABLED);
@@ -84,40 +89,6 @@ public class ParadoxAlarm implements CommandListener {
         });
     }
 
-    private void timeout(TxCommand<?> txCommand) {
-        synchronized (comPort) {
-            try {
-                if (nbCmdTimeout < NB_FAIL_FOR_COM_RESTART) {
-                    log.warn("timeout for tx: " + txCommand);
-                    log.info("clear waiting for tx: " + txCommand);
-                    txQueue.computeIfPresent(txCommand.getResponseCode(), (s, txCommands) -> {
-                        txCommands.forEach(txCommand1 -> txCommand1.ended());
-                        txCommands.clear();
-                        return txCommands;
-                    });
-                } else {
-                    nbCmdTimeout = 0;
-
-                    log.error("paradox alarm not responding");
-                    log.warn("clear Tx Queues...");
-                    txQueue.keySet().forEach(k -> txQueue.get(k).forEach(tx -> tx.ended()));
-                    txQueue.clear();
-                    log.warn("close com port...");
-                    comPort.closePort();
-                    waitFor(1000);
-
-                    log.warn("open com port...");
-                    comPort.openPort();
-                    waitFor(1000);
-                }
-                nbCmdTimeout++;
-                log.warn("nb reinit: " + nbCmdTimeout);
-            } catch (Exception e) {
-                log.error(e);
-            }
-        }
-    }
-
     public synchronized void runCommand(final TxCommand<?> txCommand) throws IOException {
         OutputStream outputStream = comPort.getOutputStream();
         String tx = txCommand.getAscii();
@@ -128,13 +99,14 @@ public class ParadoxAlarm implements CommandListener {
         txQueue.get(responseCode).addLast(txCommand);
 
         txCommand.addResponseHandler((txCommand12, success) -> {
-            log.debug(txCommand.getResponseCode() + ": one serial comm ok --> reinit set to 0");
-            nbCmdTimeout = 0;
+            log.debug(txCommand12.getResponseCode() + ": one serial comm ok");
+            successCommListener.onSuccess(txCommand12);
         });
 
         txCommand.setTimeoutHandler(txCommand1 -> {
             log.warn("timeout on cmd: " + txCommand1);
-            timeout(txCommand1);
+            errorCommListener.onTimeout(txCommand1);
+            clear(txCommand1);
         });
         log.info("send: " + txCommand);
         outputStream.write(panelBytes);
@@ -182,6 +154,23 @@ public class ParadoxAlarm implements CommandListener {
         } else {
             log.warn("no matching response handler: " + rxCommand);
         }
+    }
+
+    public void clear(TxCommand<?> txCommand) {
+        log.info("clear waiting for tx: " + txCommand);
+        txQueue.computeIfPresent(txCommand.getResponseCode(), (s, txCommands) -> {
+            txCommands.forEach(TxCommand::ended);
+            txCommands.clear();
+            return txCommands;
+        });
+    }
+
+    public void close() {
+        log.warn("clear Tx Queues...");
+        txQueue.keySet().forEach(k -> txQueue.get(k).forEach(TxCommand::ended));
+        txQueue.clear();
+        log.warn("close com port...");
+        comPort.closePort();
     }
 
     private void waitFor(long time) {
