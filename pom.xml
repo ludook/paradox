@@ -9,13 +9,16 @@
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <log4j.version>2.9.1</log4j.version>
-        <java.version>1.8</java.version>
-        <junit.version>5.0.1</junit.version>
-        <log4j.version>2.9.1</log4j.version>
-        <reflections.version>0.9.11</reflections.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
+        <log4j.version>2.17.1</log4j.version>
+        <junit.version>5.8.2</junit.version>
+        <junit-platform-surefire-provider.version>1.3.2</junit-platform-surefire-provider.version>
+        <reflections.version>0.10.2</reflections.version>
+        <jSerialComm.version>2.9.0</jSerialComm.version>
     </properties>
 
     <modules>
